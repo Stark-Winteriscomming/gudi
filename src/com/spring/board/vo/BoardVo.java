@@ -10,7 +10,14 @@ public class BoardVo {
 	private String	modifier;
 	private int totalCnt;
 	
+	private CodeVo codeVo; 
 	
+	public CodeVo getCodeVo() {
+		return codeVo;
+	}
+	public void setCodeVo(CodeVo codeVo) {
+		this.codeVo = codeVo;
+	}
 	public int getTotalCnt() {
 		return totalCnt;
 	}
