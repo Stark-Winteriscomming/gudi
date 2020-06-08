@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CodeVo;
 import com.spring.board.vo.PageVo;
 
 @Repository
@@ -59,6 +60,11 @@ public class BoardDaoImpl implements BoardDao{
 	public int boardModify(BoardVo boardVo) {
 		// TODO Auto-generated method stub
 		return sqlSession.update("board.boardModify", boardVo);
+	}
+	@Override
+	public List<CodeVo> selectBoardType(String codeType) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("board.selectBoardType", codeType);
 	}
 	
 	

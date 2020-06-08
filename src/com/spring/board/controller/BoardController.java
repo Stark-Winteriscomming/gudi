@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.board.HomeController;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CodeVo;
 import com.spring.board.vo.PageVo;
 import com.spring.common.CommonUtil;
 
@@ -33,6 +34,22 @@ public class BoardController {
 	boardService boardService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+	// select menu
+	@RequestMapping(value = "/board/selectBoardType.do", method = RequestMethod.GET, produces="application/text;charset=utf-8")
+	@ResponseBody
+	public String selectBoardTypeAction() throws Exception {
+
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
+		
+		String codeType = "menu"; 
+		List<CodeVo> codeList = boardService.selectBoardType(codeType);
+		
+		//result.put("success", (resultCnt > 0) ? "Y" : "N");
+		String callbackMsg = commonUtil.getJsonCallBackString(" ", codeList);
+		return callbackMsg;
+	}
 
 	// remove
 	@RequestMapping(value = "/board/boardRemoveAction.do", method = RequestMethod.POST)
@@ -49,27 +66,28 @@ public class BoardController {
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 		return callbackMsg;
 	}
-	// modify
-		@RequestMapping(value = "/board/boardModifyAction.do", method = RequestMethod.POST)
-		@ResponseBody
-		public String boardModifyAction(BoardVo boardVo) throws Exception {
 
-			HashMap<String, String> result = new HashMap<String, String>();
-			CommonUtil commonUtil = new CommonUtil();
+	// modify
+	@RequestMapping(value = "/board/boardModifyAction.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String boardModifyAction(BoardVo boardVo) throws Exception {
+
+		HashMap<String, String> result = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
 
 //			int resultCnt = boardService.boardInsert(boardVo);
-			int resultCnt = boardService.boardModify(boardVo);
+		int resultCnt = boardService.boardModify(boardVo);
 
-			result.put("success", (resultCnt > 0) ? "Y" : "N");
-			result.put("boardType", boardVo.getBoardType());
-			result.put("boardNum", String.valueOf(boardVo.getBoardNum()));
-			String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
-			return callbackMsg;
-		}
-	
+		result.put("success", (resultCnt > 0) ? "Y" : "N");
+		result.put("boardType", boardVo.getBoardType());
+		result.put("boardNum", String.valueOf(boardVo.getBoardNum()));
+		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
+		return callbackMsg;
+	}
+
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
 	public String boardList(Locale locale, Model model, PageVo pageVo) throws Exception {
-
+		System.out.println("AAAAAAAAAAAAAA");
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
 		int page = 1;
@@ -116,7 +134,7 @@ public class BoardController {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-
+		
 		int resultCnt = boardService.boardInsert(boardVo);
 
 		result.put("success", (resultCnt > 0) ? "Y" : "N");

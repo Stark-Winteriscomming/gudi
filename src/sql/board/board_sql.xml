@@ -9,6 +9,9 @@
     	<result property="boardComment" column="BOARD_COMMENT"/>
     </resultMap>
     
+    <select id="selectBoardType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
+    	SELECT * FROM COM_CODE WHERE CODE_TYPE = #{codeType}
+    </select>
     <update id="boardModify" parameterType="com.spring.board.vo.BoardVo">
     	UPDATE BOARD 
     	SET BOARD_TITLE=#{boardTitle}
@@ -25,7 +28,7 @@
     </delete>
     
     <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
-        SELECT 
+        SELECT
 		  BOARD_TYPE
 		  ,BOARD_NUM
 		  ,BOARD_TITLE

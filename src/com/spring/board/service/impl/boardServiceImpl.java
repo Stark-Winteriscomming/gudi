@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.spring.board.dao.BoardDao;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.CodeVo;
 import com.spring.board.vo.PageVo;
 
 @Service
@@ -62,6 +63,12 @@ public class boardServiceImpl implements boardService{
 	public int boardModify(BoardVo boardVo) {
 		// TODO Auto-generated method stub
 		return boardDao.boardModify(boardVo);
+	}
+
+	@Override
+	public List<CodeVo> selectBoardType(String codeType) {
+		// TODO Auto-generated method stub
+		return boardDao.selectBoardType(codeType);
 	}
 	
 }
