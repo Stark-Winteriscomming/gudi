@@ -21,7 +21,7 @@
 				data : param,
 				success : function(data, textStatus, jqXHR) {
 					for(var i=0; i<data.length; i++){
-						$j("#search_box").append("<input type='checkbox' name='option' value=" + data[i].code_id + "/>" + 
+						$j("#search_box").append("<input type='checkbox' name='option' value=" + data[i].code_id + " />" + 
 							      "<label for=" + data[i].code_id + ">" + data[i].code_name + "</label>");
 					}
 					
@@ -37,13 +37,19 @@
 		
 		//
 		$j("#btn_search").on("click", function () {
-			$j("input[name=option]:checked").each(function() {
-
-				var test = $j(this).val();
-				console.log(test);
-
-			});
-		})			
+			form_value = $j("#frm_search").serialize();
+			console.log(form_value);
+			var queryUrl = "/board/boardList.do?" + form_value;
+// 			$j("#a_search").attr("href", queryUrl);
+			$j("#frm_search").attr("action", queryUrl);
+// 			console.log($j("#a_search"));
+// 			$j("#a_search").click();
+			$j("#frm_search").submit();
+		});
+		
+// 		$j("#frm_search").submit(function (event){
+// 			event.preventDefault(); 
+// 		})
 	});
 	
 </script>
@@ -79,10 +85,14 @@
 		</tr>
 		<tr>
 			<td>
-				<div id="search_box">
-					<input type="checkbox" name="option" value="total" onClick="toggle(this)" /> <label for="total">전체</label>
-				</div>
+				<input type="checkbox" name="total" value="total" onClick="toggle(this)" /> <label for="total">전체</label>
+				<form id=frm_search>
+					<div id="search_box">
+					</div>
+					<input type="submit" value="조회" style="display : none">
+				</form>
 				<button id="btn_search">조회</button>
+<!-- 				<a id="a_search" href="">조회</a> -->
 			</td>
 		</tr>
 	</table>

@@ -1,6 +1,8 @@
 package com.spring.board.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
 
 @Repository
@@ -29,9 +32,13 @@ public class BoardDaoImpl implements BoardDao{
 	 * 
 	 * */
 	@Override
-	public List<BoardVo> selectBoardList(PageVo pageVo) throws Exception {
+	public List<BoardVo> selectBoardList(PageVo pageVo, Options os) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("board.boardList",pageVo);
+		Map<String, Object> map = new HashMap<String, Object>(); 
+		map.put("pvo", pageVo);
+		map.put("os", os);
+//		map.put("os", new Options());
+		return sqlSession.selectList("board.boardList", map);
 	}
 	
 	@Override

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -24,6 +27,7 @@ import com.spring.board.HomeController;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
 import com.spring.common.CommonUtil;
 
@@ -36,17 +40,17 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	// select menu
-	@RequestMapping(value = "/board/selectBoardType.do", method = RequestMethod.GET, produces="application/text;charset=utf-8")
+	@RequestMapping(value = "/board/selectBoardType.do", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
 	@ResponseBody
 	public String selectBoardTypeAction() throws Exception {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		
-		String codeType = "menu"; 
+
+		String codeType = "menu";
 		List<CodeVo> codeList = boardService.selectBoardType(codeType);
-		
-		//result.put("success", (resultCnt > 0) ? "Y" : "N");
+
+		// result.put("success", (resultCnt > 0) ? "Y" : "N");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", codeList);
 		return callbackMsg;
 	}
@@ -86,7 +90,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model, PageVo pageVo) throws Exception {
+	public String boardList(HttpServletRequest req, Locale locale, Model model, PageVo pageVo) throws Exception {
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
 		int page = 1;
@@ -96,7 +100,19 @@ public class BoardController {
 			pageVo.setPageNo(page);
 		}
 
-		boardList = boardService.SelectBoardList(pageVo);
+		String options[] = req.getParameterValues("option");
+		Options os = null;
+		if (options != null) {
+			Map<String, String> m = new HashMap<String, String>();
+			int i = 0;
+			for (String key : options)
+				m.put(key, options[i++]);
+
+			final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+			os = mapper.convertValue(m, Options.class);
+			logger.info(">>>>>" + os.toString());
+		}
+		boardList = boardService.SelectBoardList(pageVo, os);
 		totalCnt = boardService.selectBoardCnt();
 
 		model.addAttribute("boardList", boardList);
@@ -133,7 +149,7 @@ public class BoardController {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		
+
 		int resultCnt = boardService.boardInsert(boardVo);
 
 		result.put("success", (resultCnt > 0) ? "Y" : "N");

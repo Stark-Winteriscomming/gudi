@@ -38,7 +38,7 @@
     	AND BOARD_NUM = #{boardNum}
     </delete>
     
-    <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
+    <select id="boardList" parameterType="java.util.HashMap" resultMap="boardVo">
         SELECT
 		   BOARD_TYPE
 		  ,BOARD_NUM
@@ -71,9 +71,31 @@
 			FROM
 				BOARD B, COM_CODE C
 			WHERE 
-				B.BOARD_TYPE = C.CODE_ID 
-		)
-		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
+			<if test="os == null">
+				B.BOARD_TYPE = C.CODE_ID)
+			</if>
+			<trim suffixOverrides="OR">
+			<if test="os != null">
+				(B.BOARD_TYPE = C.CODE_ID)
+				AND (
+			</if>
+			<if test="os != null and os.a01 != null">
+    			B.BOARD_TYPE = 'a01' OR
+  			</if>
+  			<if test="os != null and os.a02 != null">
+    			B.BOARD_TYPE = 'a02' OR  
+  			</if>
+  			<if test="os != null and os.a03 != null">
+    			B.BOARD_TYPE = 'a03' OR 
+  			</if>
+  			<if test="os != null and os.a04 != null">
+    			B.BOARD_TYPE = 'a04' OR 
+  			</if>
+  			</trim>
+  			<if test="os != null">
+				))
+			</if> 
+			WHERE NUMROW BETWEEN (#{pvo.pageNo}-1)*10 + 1 AND (#{pvo.pageNo})*10
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">

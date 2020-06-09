@@ -9,6 +9,7 @@ import com.spring.board.dao.BoardDao;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
 
 @Service
@@ -24,10 +25,10 @@ public class boardServiceImpl implements boardService{
 	}
 	
 	@Override
-	public List<BoardVo> SelectBoardList(PageVo pageVo) throws Exception {
+	public List<BoardVo> SelectBoardList(PageVo pageVo, Options os) throws Exception {
 		// TODO Auto-generated method stub
 		
-		return boardDao.selectBoardList(pageVo);
+		return boardDao.selectBoardList(pageVo, os);
 	}
 	
 	@Override
