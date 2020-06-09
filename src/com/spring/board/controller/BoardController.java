@@ -87,7 +87,6 @@ public class BoardController {
 
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
 	public String boardList(Locale locale, Model model, PageVo pageVo) throws Exception {
-		System.out.println("AAAAAAAAAAAAAA");
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
 		int page = 1;

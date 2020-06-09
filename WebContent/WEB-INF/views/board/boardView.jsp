@@ -91,7 +91,7 @@
 					<input type="hidden" name="boardNum" value="${boardNum }">
 					<table border="1">
 						<tr>
-							<td width="120" align="center">Comment</td>
+							<td width="120" align="center">Title</td>
 							<td width="400">
 								<div>
 									<input type="hidden" id="i_board_boardTitle"

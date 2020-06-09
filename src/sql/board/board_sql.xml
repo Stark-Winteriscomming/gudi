@@ -7,6 +7,17 @@
     	<result property="boardNum" 	column="BOARD_NUM"/>
     	<result property="boardTitle" 	column="BOARD_TITLE"/>
     	<result property="boardComment" column="BOARD_COMMENT"/>
+    	<collection property="codeVo" resultMap="codeVo" />
+    </resultMap>
+    
+    <resultMap type="com.spring.board.vo.CodeVo" id="codeVo">
+    	<result property="code_type" 	column="CODE_TYPE"/>
+    	<result property="code_id" 	column="CODE_ID"/>
+    	<result property="code_name" 	column="CODE_NAME"/>
+    	<result property="creator" column="CREATOR"/>
+    	<result property="create_time" column="CREATE_TIME"/>
+    	<result property="modifier" column="MODIFIER"/>
+    	<result property="modified_time" column="MODIFIED_TIME"/>
     </resultMap>
     
     <select id="selectBoardType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
@@ -29,11 +40,18 @@
     
     <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
         SELECT
-		  BOARD_TYPE
+		   BOARD_TYPE
 		  ,BOARD_NUM
 		  ,BOARD_TITLE
 		  ,BOARD_COMMENT
 		  ,TOTAL_CNT
+		  ,CODE_TYPE
+		  ,CODE_ID
+		  ,CODE_NAME
+		  ,CREATOR
+		  ,CREATE_TIME
+		  ,MODIFIER
+		  ,MODIFIED_TIME
 		FROM 
 		(
 		  SELECT
@@ -43,8 +61,17 @@
 				,BOARD_COMMENT
 		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 		      	,COUNT(*) OVER() AS TOTAL_CNT
+		      	,C.CODE_TYPE
+			  	,C.CODE_ID
+			  	,C.CODE_NAME
+				,C.CREATOR
+				,C.CREATE_TIME
+				,C.MODIFIER
+				,C.MODIFIED_TIME
 			FROM
-				BOARD	
+				BOARD B, COM_CODE C
+			WHERE 
+				B.BOARD_TYPE = C.CODE_ID 
 		)
 		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
     </select>
@@ -81,12 +108,12 @@
         ,MODIFIED_TIME
         )
         VALUES
-        ('1'
+        (#{boardType}
         ,NVL2((SELECT TO_NUMBER(MAX(BOARD_NUM)+1)
 	    FROM BOARD
-	    WHERE BOARD_TYPE = '1'), (SELECT TO_NUMBER(MAX(BOARD_NUM)+1)
+	    WHERE BOARD_TYPE = #{boardType}), (SELECT TO_NUMBER(MAX(BOARD_NUM)+1)
 	    FROM BOARD
-	    WHERE BOARD_TYPE = '1'), 1)
+	    WHERE BOARD_TYPE = #{boardType}), 1)
         ,#{boardTitle}
         ,#{boardComment}
         ,'SYSTEM'

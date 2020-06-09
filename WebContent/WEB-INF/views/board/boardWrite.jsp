@@ -27,7 +27,7 @@
 				console.log(data);
 				for (i = 0; i < data.length; i++) {
 					console.log(data[i].code_name);
-					target.append("<option value=" + "'" + data[i].code_name + "'>" + data[i].code_name +"</option>" );
+					target.append("<option value=" + "'" + data[i].code_id + "'>" + data[i].code_name +"</option>" );
 				}
 					
 
@@ -47,6 +47,7 @@
 				url : "/board/boardWriteAction.do",
 				dataType : "json",
 				type : "POST",
+				data : param,
 				success : function(data, textStatus, jqXHR) {
 					alert("작성완료");
 
