@@ -2,3 +2,6 @@
 .project
 .settings/
 build/
+WebContent/META-INF/maven/com.spring/board/bin/
+WebContent/META-INF/maven/com.spring/board/target/
+bin/

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -20,14 +20,14 @@
 						type : "POST",
 						data : param,
 						success : function(data, textStatus, jqXHR) {
-							alert("»èÁ¦¿Ï·á");
+							alert("ì‚­ì œì™„ë£Œ");
 
-							alert("¸Þ¼¼Áö:" + data.success);
+							alert("ë©”ì„¸ì§€:" + data.success);
 
 							location.href = "/board/boardList.do?pageNo=1";
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
-							alert("½ÇÆÐ");
+							alert("ì‹¤íŒ¨");
 						}
 					});
 				});
@@ -47,9 +47,9 @@
 										data : param,
 										success : function(data, textStatus,
 												jqXHR) {
-											alert("¼öÁ¤¿Ï·á");
+											alert("ìˆ˜ì •ì™„ë£Œ");
 
-											alert("¸Þ¼¼Áö:" + data.success);
+											alert("ë©”ì„¸ì§€:" + data.success);
 											//boardType
 											//boardNum
 											location.href = "/board/"
@@ -60,7 +60,7 @@
 										},
 										error : function(jqXHR, textStatus,
 												errorThrown) {
-											alert("½ÇÆÐ");
+											alert("ì‹¤íŒ¨");
 										}
 									});
 
@@ -122,7 +122,7 @@
 		</tr>
 		<tr><td><button id="btn_remove">remove</button></td></tr>
 		<tr><td><button id="btn_modify">modify</button></td></tr>
-		<tr><td><button id="btn_modify_complete" style="display : none">ÀÛ¼º¿Ï·á</button></td></tr>
+		<tr><td><button id="btn_modify_complete" style="display : none">ìž‘ì„±ì™„ë£Œ</button></td></tr>
 		<tr>
 			<td align="right"><a href="/board/boardList.do">List</a></td>
 		</tr>

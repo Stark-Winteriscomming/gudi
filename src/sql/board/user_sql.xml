@@ -10,7 +10,7 @@
     	<collection property="codeVo" resultMap="codeVo" />
     </resultMap>
     
-    <select id="selectBoardType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
+    <select id="getUserPhoneType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
     	SELECT * FROM COM_CODE WHERE CODE_TYPE = #{codeType}
     </select>
 </mapper>

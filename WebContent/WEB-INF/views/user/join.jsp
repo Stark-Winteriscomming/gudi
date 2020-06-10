@@ -7,12 +7,39 @@
 <title>join view</title>
 
 <script>
-(function fn_get_select_item(param) {
+$j(document).ready(function() {
+	$j("#commentForm").validate({
+		rules: {
+			user_pw_check : {
+				pwSameCheck: true
+			},
+			user_addr1 :{
+				postNumCheck : true
+			}
+		}, 
+// 		message:{
+// 			user_pw_check : {
+// 				domain: "not equal"
+// 			}		
+// 		}
+	});
+	
+	//
+	
+	$j.validator.addMethod("pwSameCheck", function(value, element) {
+  return this.optional(element) || value == $j("input[name=user_pw]").val();
+}, "not equal..");
+	
+	$j.validator.addMethod("postNumCheck", function(value, element) {
+		  return this.optional(element) || /^[0-9][0-9][0-9]-[0-9][0-9][0-9]$/.test(value);
+		}, "not addr1 format..");
+	
+	(function fn_get_select_item(param) {
 	var target = $j("#sel_user_phone1");
 	target.empty(); 
 	
 	$j.ajax({	
-		url : "/user/phone/type",
+		url : "/user/selectPhoneType.do",
 		dataType : "json",
 		type : "GET",
 		data : param,
@@ -26,9 +53,12 @@
 		}
 	});	
 })();
+});
 </script>
 </head>
 <body>
+	<form class="cmxform" id="commentForm" method="get" >
+	<fieldset>
 	<table align="center">
 		<tr>
 			<td>
@@ -47,7 +77,7 @@
 							<td width="120" align="center">pw</td>
 							<td width="300">
 								<div>
-									<input type="text" name="user_pw">
+									<input type="text" name="user_pw" minlength="6" maxlength="12">
 								</div>
 							</td>
 						</tr>
@@ -55,7 +85,7 @@
 							<td width="120" align="center">pw check</td>
 							<td width="300">
 								<div>
-									<input type="text" name="user_pw">
+									<input type="text" name="user_pw_check">
 								</div>
 							</td>
 						</tr>
@@ -63,7 +93,7 @@
 							<td width="120" align="center">name</td>
 							<td width="300">
 								<div>
-									<input type="text" name="user_name">
+									<input type="text" name="user_name" required>
 								</div>
 							</td>
 						</tr>
@@ -71,9 +101,10 @@
 							<td width="120" align="center">phone</td>
 							<td width="300">
 								<div>
-									<select id="sel_user_phone1">
+									<select id="sel_user_phone1" name="user_phone1">
+										<option>선택</option>
 									</select>
-									<input type="text" size="4" /> <input type="text" size="4" />
+									<input type="number" size="4" name="user_phone2"  required minlength=4 maxlength=4 /> <input type="number" size="4" name="user_phone3" required />
 								</div>
 							</td>
 						</tr>
@@ -102,6 +133,7 @@
 							</td>
 						</tr>
 					</table>
+					<input class="submit" type="submit" value="Submit">
 				</form>
 			</td>
 		</tr>
@@ -116,8 +148,7 @@
 			</td>
 		</tr>
 	</table>
-	<form id="frm_remove">
-		<input type="hidden" name="boardType" value="${boardType}"> <input type="hidden" name="boardNum" value="${boardNum}">
+	</fieldset>
 	</form>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/views/common/common.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -56,7 +56,7 @@
 										},
 										error : function(jqXHR, textStatus,
 												errorThrown) {
-											alert("½ÇÆÐ");
+											alert("ì‹¤íŒ¨");
 										}
 									});
 
@@ -101,18 +101,18 @@
 		</tr>
 		<tr>
 			<td align="right">
-				<a href="/board/boardWrite.do">±Û¾²±â</a>
+				<a href="/board/boardWrite.do">ê¸€ì“°ê¸°</a>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<input type="checkbox" name="total" value="total" onClick="toggle(this)" /> <label for="total">ÀüÃ¼</label>
+				<input type="checkbox" name="total" value="total" onClick="toggle(this)" /> <label for="total">ì „ì²´</label>
 				<form id=frm_search>
 					<div id="search_box"></div>
-					<input type="submit" value="Á¶È¸" style="display: none">
+					<input type="submit" value="ì¡°íšŒ" style="display: none">
 				</form>
-				<button id="btn_search">Á¶È¸</button>
-				<!-- 				<a id="a_search" href="">Á¶È¸</a> -->
+				<button id="btn_search">ì¡°íšŒ</button>
+				<!-- 				<a id="a_search" href="">ì¡°íšŒ</a> -->
 			</td>
 		</tr>
 		<tr>
