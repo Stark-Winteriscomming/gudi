@@ -12,7 +12,11 @@
 	  for(var i=0; i<checkboxes.length; i++)
 		  checkboxes[i].checked = source.checked;
 	}
+	
+	
 	$j(document).ready(function(){
+		
+		
 		(function fn_get_select_item(param) {
 			$j.ajax({	
 				url : "/board/selectBoardType.do",
@@ -24,14 +28,20 @@
 						$j("#search_box").append("<input type='checkbox' name='option' value=" + data[i].code_id + " />" + 
 							      "<label for=" + data[i].code_id + ">" + data[i].code_name + "</label>");
 					}
-					
-
+					// any checkbox clicked
+					$j("input[name=option]").on("click", function () {
+						if($j("input[name=option]:checked").length == $j("input[name=option]").length){
+							$j("input[name=total]").prop("checked", true);
+						}else {
+							$j("input[name=total]").prop("checked", false);
+						}
+					});
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert("½ÇÆÐ");
 				}
 			});
-
+			
 		})();
 		//
 		
@@ -40,16 +50,12 @@
 			form_value = $j("#frm_search").serialize();
 			console.log(form_value);
 			var queryUrl = "/board/boardList.do?" + form_value;
-// 			$j("#a_search").attr("href", queryUrl);
 			$j("#frm_search").attr("action", queryUrl);
-// 			console.log($j("#a_search"));
-// 			$j("#a_search").click();
 			$j("#frm_search").submit();
 		});
 		
-// 		$j("#frm_search").submit(function (event){
-// 			event.preventDefault(); 
-// 		})
+		
+		
 	});
 	
 </script>
