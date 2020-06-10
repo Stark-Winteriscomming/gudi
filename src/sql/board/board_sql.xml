@@ -85,7 +85,7 @@
 				</if>
 			</if>
 			)
-			WHERE NUMROW BETWEEN (#{pvo.pageNo}-1)*10 + 1 AND (#{pvo.pageNo})*10
+			WHERE NUMROW BETWEEN (#{cri.pageNum}-1)*#{cri.amount} + 1 AND (#{cri.pageNum})*#{cri.amount}
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">

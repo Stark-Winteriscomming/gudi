@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.spring.board.dao.BoardDao;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
 
@@ -32,11 +33,12 @@ public class BoardDaoImpl implements BoardDao{
 	 * 
 	 * */
 	@Override
-	public List<BoardVo> selectBoardList(PageVo pageVo, String options[]) throws Exception {
+	public List<BoardVo> selectBoardList(PageVo pageVo, String options[], Criteria cri) throws Exception {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("pvo", pageVo);
 		map.put("os", options);
+		map.put("cri", cri);
 //		map.put("os", new Options());
 		return sqlSession.selectList("board.boardList", map);
 	}

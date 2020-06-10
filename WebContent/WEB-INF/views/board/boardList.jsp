@@ -8,56 +8,71 @@
 </head>
 <script type="text/javascript">
 	function toggle(source) {
-	  checkboxes = document.getElementsByName("option");
-	  for(var i=0; i<checkboxes.length; i++)
-		  checkboxes[i].checked = source.checked;
+		checkboxes = document.getElementsByName("option");
+		for (var i = 0; i < checkboxes.length; i++)
+			checkboxes[i].checked = source.checked;
 	}
-	
-	
-	$j(document).ready(function(){
-		
-		
-		(function fn_get_select_item(param) {
-			$j.ajax({	
-				url : "/board/selectBoardType.do",
-				dataType : "json",
-				type : "GET",
-				data : param,
-				success : function(data, textStatus, jqXHR) {
-					for(var i=0; i<data.length; i++){
-						$j("#search_box").append("<input type='checkbox' name='option' value=" + data[i].code_id + " />" + 
-							      "<label for=" + data[i].code_id + ">" + data[i].code_name + "</label>");
-					}
-					// any checkbox clicked
-					$j("input[name=option]").on("click", function () {
-						if($j("input[name=option]:checked").length == $j("input[name=option]").length){
-							$j("input[name=total]").prop("checked", true);
-						}else {
-							$j("input[name=total]").prop("checked", false);
-						}
+
+	$j(document)
+			.ready(
+					function() {
+
+						(function fn_get_select_item(param) {
+							$j
+									.ajax({
+										url : "/board/selectBoardType.do",
+										dataType : "json",
+										type : "GET",
+										data : param,
+										success : function(data, textStatus,
+												jqXHR) {
+											for (var i = 0; i < data.length; i++) {
+												$j("#search_box")
+														.append(
+																"<input type='checkbox' name='option' value=" + data[i].code_id + " />"
+																		+ "<label for=" + data[i].code_id + ">"
+																		+ data[i].code_name
+																		+ "</label>");
+											}
+											// any checkbox clicked
+											$j("input[name=option]")
+													.on(
+															"click",
+															function() {
+																if ($j("input[name=option]:checked").length == $j("input[name=option]").length) {
+																	$j(
+																			"input[name=total]")
+																			.prop(
+																					"checked",
+																					true);
+																} else {
+																	$j(
+																			"input[name=total]")
+																			.prop(
+																					"checked",
+																					false);
+																}
+															});
+										},
+										error : function(jqXHR, textStatus,
+												errorThrown) {
+											alert("실패");
+										}
+									});
+
+						})();
+						//
+
+						//
+						$j("#btn_search").on("click", function() {
+							form_value = $j("#frm_search").serialize();
+							console.log(form_value);
+							var queryUrl = "/board/boardList.do?" + form_value;
+							$j("#frm_search").attr("action", queryUrl);
+							$j("#frm_search").submit();
+						});
+
 					});
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert("실패");
-				}
-			});
-			
-		})();
-		//
-		
-		//
-		$j("#btn_search").on("click", function () {
-			form_value = $j("#frm_search").serialize();
-			console.log(form_value);
-			var queryUrl = "/board/boardList.do?" + form_value;
-			$j("#frm_search").attr("action", queryUrl);
-			$j("#frm_search").submit();
-		});
-		
-		
-		
-	});
-	
 </script>
 <body>
 	<table align="center">
@@ -93,12 +108,26 @@
 			<td>
 				<input type="checkbox" name="total" value="total" onClick="toggle(this)" /> <label for="total">전체</label>
 				<form id=frm_search>
-					<div id="search_box">
-					</div>
-					<input type="submit" value="조회" style="display : none">
+					<div id="search_box"></div>
+					<input type="submit" value="조회" style="display: none">
 				</form>
 				<button id="btn_search">조회</button>
-<!-- 				<a id="a_search" href="">조회</a> -->
+				<!-- 				<a id="a_search" href="">조회</a> -->
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<ul class="pagination">
+					<c:if test="${pgvo.prev }">
+						<li class="page-item"><a class="page-link" href="/board/boardList.do?pageNum=${pgvo.startPage-1 }&amount=${pgvo.cri.amount}">Prev</a></li>
+					</c:if>
+					<c:forEach var="i" begin="${pgvo.startPage }" end="${pgvo.endPage }">
+						<li class="page-item ${pgvo.cri.pageNum == i ? 'active' : '' }"><a class="page-link" href="/board/boardList.do?pageNum=${i }&amount=${pgvo.cri.amount}">${i }</a></li>
+					</c:forEach>
+					<c:if test="${pgvo.next }">
+						<li class="page-item"><a class="page-link" href="/board/boardList.do?pageNum=${pgvo.endPage+1 }&amount=${pgvo.cri.amount}">Next</a></li>
+					</c:if>
+				</ul>
 			</td>
 		</tr>
 	</table>

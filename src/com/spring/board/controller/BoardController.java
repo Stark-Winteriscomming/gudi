@@ -1,16 +1,12 @@
 package com.spring.board.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +15,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.board.HomeController;
-import com.spring.board.service.boardService;
+import com.spring.board.service.BoardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
+import com.spring.board.vo.PagingVo;
 import com.spring.common.CommonUtil;
 
 @Controller
 public class BoardController {
 
 	@Autowired
-	boardService boardService;
+	BoardService boardService;
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -90,7 +86,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(HttpServletRequest req, Locale locale, Model model, PageVo pageVo) throws Exception {
+	public String boardList(HttpServletRequest req, Locale locale, Model model, PageVo pageVo, Criteria cri) throws Exception {
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
 		int page = 1;
@@ -99,26 +95,17 @@ public class BoardController {
 		if (pageVo.getPageNo() == 0) {
 			pageVo.setPageNo(page);
 		}
-
+		
 		String options[] = req.getParameterValues("option");
 		Options os = null;
-//		if (options != null) {
-//			Map<String, String> m = new HashMap<String, String>();
-//			int i = 0;
-//			for (String key : options)
-//				m.put(key, options[i++]);
-//
-//			final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-//			os = mapper.convertValue(m, Options.class);
-//			logger.info(">>>>>" + os.toString());
-//		}
-		boardList = boardService.SelectBoardList(pageVo, options);
+		if(cri == null) cri = new Criteria();
+		boardList = boardService.SelectBoardList(pageVo, options, cri);
 		totalCnt = boardService.selectBoardCnt();
 
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
-
+		model.addAttribute("pgvo", new PagingVo(totalCnt,cri));
 		return "board/boardList";
 	}
 
@@ -149,9 +136,8 @@ public class BoardController {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-
 		int resultCnt = boardService.boardInsert(boardVo);
-
+		
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 

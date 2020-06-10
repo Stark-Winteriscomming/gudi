@@ -12,6 +12,14 @@ public class BoardVo {
 	
 	private CodeVo codeVo; 
 	
+	
+	@Override
+	public String toString() {
+		return "BoardVo [boardType=" + boardType + ", boardNum=" + boardNum + ", boardTitle=" + boardTitle
+				+ ", boardComment=" + boardComment + ", creator=" + creator + ", modifier=" + modifier + ", totalCnt="
+				+ totalCnt + ", codeVo=" + codeVo + "]";
+	}
+	
 	public CodeVo getCodeVo() {
 		return codeVo;
 	}

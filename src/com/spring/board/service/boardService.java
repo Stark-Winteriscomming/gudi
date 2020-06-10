@@ -4,14 +4,15 @@ import java.util.List;
 
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
+import com.spring.board.vo.Criteria;
 import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
 
-public interface boardService {
+public interface BoardService {
 
 	public String selectTest() throws Exception;
 
-	public List<BoardVo> SelectBoardList(PageVo pageVo, String[] options) throws Exception;
+	public List<BoardVo> SelectBoardList(PageVo pageVo, String[] options, Criteria cri) throws Exception;
 
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
 
