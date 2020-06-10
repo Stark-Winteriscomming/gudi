@@ -32,11 +32,11 @@ public class BoardDaoImpl implements BoardDao{
 	 * 
 	 * */
 	@Override
-	public List<BoardVo> selectBoardList(PageVo pageVo, Options os) throws Exception {
+	public List<BoardVo> selectBoardList(PageVo pageVo, String options[]) throws Exception {
 		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("pvo", pageVo);
-		map.put("os", os);
+		map.put("os", options);
 //		map.put("os", new Options());
 		return sqlSession.selectList("board.boardList", map);
 	}

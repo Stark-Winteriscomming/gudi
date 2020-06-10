@@ -102,17 +102,17 @@ public class BoardController {
 
 		String options[] = req.getParameterValues("option");
 		Options os = null;
-		if (options != null) {
-			Map<String, String> m = new HashMap<String, String>();
-			int i = 0;
-			for (String key : options)
-				m.put(key, options[i++]);
-
-			final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-			os = mapper.convertValue(m, Options.class);
-			logger.info(">>>>>" + os.toString());
-		}
-		boardList = boardService.SelectBoardList(pageVo, os);
+//		if (options != null) {
+//			Map<String, String> m = new HashMap<String, String>();
+//			int i = 0;
+//			for (String key : options)
+//				m.put(key, options[i++]);
+//
+//			final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
+//			os = mapper.convertValue(m, Options.class);
+//			logger.info(">>>>>" + os.toString());
+//		}
+		boardList = boardService.SelectBoardList(pageVo, options);
 		totalCnt = boardService.selectBoardCnt();
 
 		model.addAttribute("boardList", boardList);

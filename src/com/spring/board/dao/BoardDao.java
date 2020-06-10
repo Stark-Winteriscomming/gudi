@@ -11,7 +11,7 @@ public interface BoardDao {
 
 	public String selectTest() throws Exception;
 
-	public List<BoardVo> selectBoardList(PageVo pageVo, Options os) throws Exception;
+	public List<BoardVo> selectBoardList(PageVo pageVo, String[] options) throws Exception;
 
 	public BoardVo selectBoard(BoardVo boardVo) throws Exception;
 

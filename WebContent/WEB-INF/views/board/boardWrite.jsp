@@ -14,9 +14,6 @@
 		var target = $j("#sel_board_type");
 		target.empty(); 
 		
-// 		if(param == "") {
-// 			target.append("<option value=" + "'" + "선택" + "'" + "/>" );
-// 		}
 		$j.ajax({	
 			url : "/board/selectBoardType.do",
 			dataType : "json",
@@ -24,9 +21,7 @@
 			data : param,
 			success : function(data, textStatus, jqXHR) {
 
-				console.log(data);
 				for (i = 0; i < data.length; i++) {
-					console.log(data[i].code_name);
 					target.append("<option value=" + "'" + data[i].code_id + "'>" + data[i].code_name +"</option>" );
 				}
 					
@@ -41,6 +36,14 @@
 ///////////
 		
 		$j("#submit").on("click", function() {
+			if(!($j("input[name='boardTitle']").val())){
+				alert("제목을 작성해주세요")
+				return false;	
+			}
+			if(!($j("textarea[name='boardComment']").val())){
+				alert("내용을 작성해주세요")
+				return false;	
+			}
 			var $frm = $j('.boardWrite :input');
 			var param = $frm.serialize();
 			$j.ajax({
@@ -60,12 +63,6 @@
 				}
 			});
 		});
-		// select box on changed
-// 		$j("select[name='boardType']").on("change", function(source){
-// 			console.log(this.value); 
-// 		});
-		
-		
 
 	});
 
@@ -79,7 +76,6 @@
 			</tr>
 			<tr>
 				<td>
-<!-- 				fn_get_select_item(this.value) -->
 					<table border="1">
 						<tr>
 							<td width="120" align="center">Type</td>

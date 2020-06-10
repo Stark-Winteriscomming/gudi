@@ -11,7 +11,7 @@ public interface boardService {
 
 	public String selectTest() throws Exception;
 
-	public List<BoardVo> SelectBoardList(PageVo pageVo, Options os) throws Exception;
+	public List<BoardVo> SelectBoardList(PageVo pageVo, String[] options) throws Exception;
 
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
 
