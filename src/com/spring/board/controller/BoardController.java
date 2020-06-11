@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spring.board.HomeController;
 import com.spring.board.service.BoardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
@@ -33,7 +32,7 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	// select menu
 	@RequestMapping(value = "/board/selectBoardType.do", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
