@@ -5,3 +5,7 @@ build/
 WebContent/META-INF/maven/com.spring/board/bin/
 WebContent/META-INF/maven/com.spring/board/target/
 bin/
+.tern-project
+META-INF/
+build.properties
+

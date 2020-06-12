@@ -27,6 +27,7 @@ import com.spring.board.vo.PagingVo;
 import com.spring.common.CommonUtil;
 
 @Controller
+@RequestMapping(value = "/board")
 public class BoardController {
 
 	@Autowired
@@ -35,30 +36,27 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	// select menu
-	@RequestMapping(value = "/board/selectBoardType.do", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
+	@RequestMapping(value = "/selectBoardType/{codeType}", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
 	@ResponseBody
-	public String selectBoardTypeAction() throws Exception {
+	public String selectBoardTypeAction(@PathVariable("codeType")String codeType) throws Exception {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
-		String codeType = "menu";
 		List<CodeVo> codeList = boardService.selectBoardType(codeType);
 
-		// result.put("success", (resultCnt > 0) ? "Y" : "N");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", codeList);
 		return callbackMsg;
 	}
 
 	// remove
-	@RequestMapping(value = "/board/boardRemoveAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/boardRemoveAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardRemoveAction(BoardVo boardVo) throws Exception {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
-//		int resultCnt = boardService.boardInsert(boardVo);
 		int resultCnt = boardService.boardDelete(boardVo);
 
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
@@ -67,14 +65,13 @@ public class BoardController {
 	}
 
 	// modify
-	@RequestMapping(value = "/board/boardModifyAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/boardModifyAction.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardModifyAction(BoardVo boardVo) throws Exception {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 
-//			int resultCnt = boardService.boardInsert(boardVo);
 		int resultCnt = boardService.boardModify(boardVo);
 
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
@@ -84,7 +81,7 @@ public class BoardController {
 		return callbackMsg;
 	}
 
-	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList(HttpServletRequest req, Locale locale, Model model, PageVo pageVo, Criteria cri) throws Exception {
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
@@ -108,7 +105,7 @@ public class BoardController {
 		return "board/boardList";
 	}
 
-	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
 	public String boardView(Locale locale, Model model, @PathVariable("boardType") String boardType,
 			@PathVariable("boardNum") int boardNum) throws Exception {
 
@@ -123,24 +120,22 @@ public class BoardController {
 		return "board/boardView";
 	}
 
-	@RequestMapping(value = "/board/boardWrite.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardWrite.do", method = RequestMethod.GET)
 	public String boardWrite(Locale locale, Model model) throws Exception {
 
 		return "board/boardWrite";
 	}
 
-	@RequestMapping(value = "/board/boardWriteAction.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardWriteAction(Locale locale, BoardVo boardVo) throws Exception {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		int resultCnt = boardService.boardInsert(boardVo);
 		
-		result.put("success", (resultCnt > 0) ? "Y" : "N");
+		result.put("success", (boardService.boardInsert(boardVo) > 0) ? "Y" : "N");
+		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
-
-		System.out.println("callbackMsg::" + callbackMsg);
 
 		return callbackMsg;
 	}
