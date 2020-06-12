@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+    <select id="getUserPhoneType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
+    	SELECT * FROM COM_CODE WHERE CODE_TYPE = #{codeType}
+    </select>
+    
+    <select id="checkDuplicatedId" parameterType="str" resultType="i">
+    	SELECT COUNT(USER_ID) FROM USER_INFO WHERE USER_ID = #{id} 
+    </select>
+    
+    <insert id="registerUser" parameterType="userVo">
+    	Insert into USER_INFO (USER_ID,USER_PW,USER_NAME,USER_PHONE1,USER_PHONE2,USER_PHONE3,USER_ADDR1,USER_ADDR2,USER_COMPANY,CREATOR,CREATE_TIME,MODIFIER,MODIFIED_TIME) values 
+    	(#{user_id},#{user_pw},#{user_name},#{user_phone1},#{user_phone2},#{user_phone3},#{user_addr1},#{user_addr2},#{user_company},null,null,null,null)
+    </insert> 
+</mapper>

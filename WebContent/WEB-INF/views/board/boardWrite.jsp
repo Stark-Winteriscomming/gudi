@@ -7,66 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>boardWrite</title>
 </head>
-<script type="text/javascript">
-	$j(document).ready(function() {
-		////////
-		(function fn_get_select_item(param) {
-		var target = $j("#sel_board_type");
-		target.empty(); 
-		
-		$j.ajax({	
-			url : "/board/selectBoardType.do",
-			dataType : "json",
-			type : "GET",
-			data : param,
-			success : function(data, textStatus, jqXHR) {
-
-				for (i = 0; i < data.length; i++) {
-					target.append("<option value=" + "'" + data[i].code_id + "'>" + data[i].code_name +"</option>" );
-				}
-					
-
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				alert("실패");
-			}
-		});
-
-	})();
-///////////
-		
-		$j("#submit").on("click", function() {
-			if(!($j("input[name='boardTitle']").val())){
-				alert("제목을 작성해주세요")
-				return false;	
-			}
-			if(!($j("textarea[name='boardComment']").val())){
-				alert("내용을 작성해주세요")
-				return false;	
-			}
-			var $frm = $j('.boardWrite :input');
-			var param = $frm.serialize();
-			$j.ajax({
-				url : "/board/boardWriteAction.do",
-				dataType : "json",
-				type : "POST",
-				data : param,
-				success : function(data, textStatus, jqXHR) {
-					alert("작성완료");
-
-					alert("메세지:" + data.success);
-
-					location.href = "/board/boardList.do?pageNo=1";
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert("실패");
-				}
-			});
-		});
-
-	});
-
-</script>
+<script src="/resources/js/common.js"></script>
+<script src="/resources/js/board/boardWrite.js"></script>
 <body>
 	<form class="boardWrite">
 		<table align="center">
@@ -81,7 +23,7 @@
 							<td width="120" align="center">Type</td>
 							<td width="400"><select name="boardType"
 								id="sel_board_type">
-									<option value="">선택</option>
+									<option id="opt_default" value="선택" selected="selected">선택</option>
 							</select></td>
 						</tr>
 						<tr>

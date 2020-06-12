@@ -6,74 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>list</title>
 </head>
-<script type="text/javascript">
-	function toggle(source) {
-		checkboxes = document.getElementsByName("option");
-		for (var i = 0; i < checkboxes.length; i++)
-			checkboxes[i].checked = source.checked;
-	}
-
-	$j(document)
-			.ready(
-					function() {
-
-						(function fn_get_select_item(param) {
-							$j
-									.ajax({
-										url : "/board/selectBoardType.do",
-										dataType : "json",
-										type : "GET",
-										data : param,
-										success : function(data, textStatus,
-												jqXHR) {
-											for (var i = 0; i < data.length; i++) {
-												$j("#search_box")
-														.append(
-																"<input type='checkbox' name='option' value=" + data[i].code_id + " />"
-																		+ "<label for=" + data[i].code_id + ">"
-																		+ data[i].code_name
-																		+ "</label>");
-											}
-											// any checkbox clicked
-											$j("input[name=option]")
-													.on(
-															"click",
-															function() {
-																if ($j("input[name=option]:checked").length == $j("input[name=option]").length) {
-																	$j(
-																			"input[name=total]")
-																			.prop(
-																					"checked",
-																					true);
-																} else {
-																	$j(
-																			"input[name=total]")
-																			.prop(
-																					"checked",
-																					false);
-																}
-															});
-										},
-										error : function(jqXHR, textStatus,
-												errorThrown) {
-											alert("실패");
-										}
-									});
-
-						})();
-						//
-
-						//
-						$j("#btn_search").on("click", function() {
-							form_value = $j("#frm_search").serialize();
-							console.log(form_value);
-							var queryUrl = "/board/boardList.do?" + form_value;
-							$j("#frm_search").attr("action", queryUrl);
-							$j("#frm_search").submit();
-						});
-
-					});
-</script>
+<script src="/resources/js/common.js"></script>
+<script src="/resources/js/board/boardList.js"></script>
 <body>
 	<table align="center">
 		<tr>
