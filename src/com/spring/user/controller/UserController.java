@@ -28,9 +28,8 @@ public class UserController {
 	private UserService userService; 
 	
 	@ResponseBody
-	@RequestMapping(value = "/selectPhoneType", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
-	public String getUserPhoneType() throws Exception {
-		String codeType = "phone"; 
+	@RequestMapping(value = "/selectPhoneType/{codeType}", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
+	public String getUserPhoneType(@PathVariable("codeType")String codeType) throws Exception {
 		List<CodeVo> codeList = userService.getUserPhoneType(codeType); 
 		
 		String callbackMsg = CommonUtil.getJsonCallBackString(" ", codeList);
