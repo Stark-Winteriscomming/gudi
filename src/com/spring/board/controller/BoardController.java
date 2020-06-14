@@ -60,6 +60,7 @@ public class BoardController {
 		int resultCnt = boardService.boardDelete(boardVo);
 
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
+		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 		return callbackMsg;
 	}
@@ -73,10 +74,13 @@ public class BoardController {
 		CommonUtil commonUtil = new CommonUtil();
 
 		int resultCnt = boardService.boardModify(boardVo);
-
+		String boardType = boardVo.getBoardType(); 
+		int boardNum = boardVo.getBoardNum();
 		result.put("success", (resultCnt > 0) ? "Y" : "N");
-		result.put("boardType", boardVo.getBoardType());
-		result.put("boardNum", String.valueOf(boardVo.getBoardNum()));
+		result.put("boardType", boardType);
+		result.put("boardNum", String.valueOf(boardNum));
+		result.put("href", "/board/" + boardType + 
+				"/"+ boardNum + "/" + "boardView.do"); 
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 		return callbackMsg;
 	}

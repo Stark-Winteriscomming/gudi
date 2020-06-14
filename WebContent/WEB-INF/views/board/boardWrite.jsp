@@ -44,7 +44,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td align="right"><a href="/board/boardList.do">List</a></td>
+				<td align="right"><a href="/board/list">List</a></td>
 			</tr>
 		</table>
 	</form>

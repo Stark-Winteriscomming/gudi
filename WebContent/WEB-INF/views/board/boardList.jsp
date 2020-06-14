@@ -53,13 +53,13 @@
 			<td>
 				<ul class="pagination">
 					<c:if test="${pgvo.prev }">
-						<li class="page-item"><a class="page-link" href="/board/boardList.do?pageNum=${pgvo.startPage-1 }&amount=${pgvo.cri.amount}">Prev</a></li>
+						<li class="page-item"><a class="page-link" href="/board/list?pageNum=${pgvo.startPage-1 }&amount=${pgvo.cri.amount}">Prev</a></li>
 					</c:if>
 					<c:forEach var="i" begin="${pgvo.startPage }" end="${pgvo.endPage }">
 						<li class="page-item ${pgvo.cri.pageNum == i ? 'active' : '' }"><a class="page-link" href="/board/boardList.do?pageNum=${i }&amount=${pgvo.cri.amount}">${i }</a></li>
 					</c:forEach>
 					<c:if test="${pgvo.next }">
-						<li class="page-item"><a class="page-link" href="/board/boardList.do?pageNum=${pgvo.endPage+1 }&amount=${pgvo.cri.amount}">Next</a></li>
+						<li class="page-item"><a class="page-link" href="/board/list?pageNum=${pgvo.endPage+1 }&amount=${pgvo.cri.amount}">Next</a></li>
 					</c:if>
 				</ul>
 			</td>

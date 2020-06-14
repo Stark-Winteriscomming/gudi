@@ -32,15 +32,17 @@ const ajaxObj = {
 			});
 		},
 		
-		updateData : function(url, param, type){
-			console.log(url)
+		updateData : function(url, param, type, oper){
 			$j.ajax({
 				url : url,
 				dataType : "json",
 				type : type,
 				data : param,
 				success : function(data, textStatus, jqXHR) {
-					(data.success == 'Y') ? alert("작성완료") : alert("작성실패");
+					let msg;
+					if(oper == "rm") msg = "삭제완료";
+					else if(oper == "update") msg = "수정완료";
+					(data.success == 'Y') ? alert(msg) : alert("실패");
 					location.href = data.href;
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -49,4 +51,3 @@ const ajaxObj = {
 			});
 		}
 }
-

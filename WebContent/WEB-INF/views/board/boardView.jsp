@@ -51,7 +51,7 @@
 		<tr><td><button id="btn_modify">modify</button></td></tr>
 		<tr><td><button id="btn_modify_complete" style="display : none">작성완료</button></td></tr>
 		<tr>
-			<td align="right"><a href="/board/boardList.do">List</a></td>
+			<td align="right"><a href="/board/list">List</a></td>
 		</tr>
 	</table>
 	<form id="frm_remove">
