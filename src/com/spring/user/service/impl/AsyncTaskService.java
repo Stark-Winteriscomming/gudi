@@ -1,4 +1,4 @@
-package com.spring.user.service;
+package com.spring.user.service.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,29 +9,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
-public class CustomDeamon implements Runnable {
-	public List<Map<String, String>> lockedIdList = new ArrayList();
+@Service("asyncTaskService")
+public class AsyncTaskService {
+
+	public static List<Map<String, String>> lockedIdList = new ArrayList();
 	public static int initFlag = 0;
 	
+	@Async
 	public void run() {
 		// TODO Auto-generated method stub
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		do{
-			System.out.println("...");
+		do {
 			for (int i = 0; i < lockedIdList.size(); i++) {
 				Iterator iterator = lockedIdList.get(i).keySet().iterator();
-				while(iterator.hasNext()) {
-					String key = (String)iterator.next();
+				while (iterator.hasNext()) {
+					String key = (String) iterator.next();
 					Date d1;
 					try {
 						d1 = format.parse(lockedIdList.get(i).get(key));
 						Date d2 = new Date();
 						long diff = d2.getTime() - d1.getTime();
 						long diffSeconds = diff / 1000 % 60;
-						System.out.println(diffSeconds);
-						if(diffSeconds > 10) {
+//						System.out.println(diffSeconds);
+						if (diffSeconds > 10) {
 							System.out.println(">>> terminating " + key);
 							release(key);
 //							System.exit(0);
@@ -40,15 +43,16 @@ public class CustomDeamon implements Runnable {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
+
 				}
 			}
-			
-			if(isEmpty()) {
-//				System.out.println("empty! >>>>>>>>>>>> custom thread stoped...");
+
+			if (isEmpty()) {
+//				System.out.println(">>>>>> empty!");
 			}
-		}while(true);
+		} while (true);
 	}
+
 	public void add(String inputId) {
 		Map<String, String> map = new HashMap<String, String>();
 		Date date = new Date();
@@ -57,22 +61,24 @@ public class CustomDeamon implements Runnable {
 		map.put(inputId, to);
 		lockedIdList.add(map);
 	}
+
 	public void print() {
-		for(int i=0; i<lockedIdList.size(); i++) {
+		for (int i = 0; i < lockedIdList.size(); i++) {
 			Iterator iterator = lockedIdList.get(i).keySet().iterator();
-			while(iterator.hasNext()) {
-				String key = (String)iterator.next();
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
 				System.out.println(i + "th key:" + key);
 			}
 		}
 	}
+
 	public boolean isExist(String inputId) {
 		// TODO Auto-generated method stub
-		for(int i=0; i<lockedIdList.size(); i++) {
+		for (int i = 0; i < lockedIdList.size(); i++) {
 			Iterator iterator = lockedIdList.get(i).keySet().iterator();
-			while(iterator.hasNext()) {
-				String key = (String)iterator.next();
-				if(key.equals(inputId)) {
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				if (key.equals(inputId)) {
 					return true;
 				}
 			}
@@ -87,11 +93,11 @@ public class CustomDeamon implements Runnable {
 
 	public void release(String inputId) {
 		// TODO Auto-generated method stub
-		for(int i=0; i<lockedIdList.size(); i++) {
+		for (int i = 0; i < lockedIdList.size(); i++) {
 			Iterator iterator = lockedIdList.get(i).keySet().iterator();
-			while(iterator.hasNext()) {
-				String key = (String)iterator.next();
-				if(key.equals(inputId)) {
+			while (iterator.hasNext()) {
+				String key = (String) iterator.next();
+				if (key.equals(inputId)) {
 					lockedIdList.remove(lockedIdList.get(i));
 				}
 			}
@@ -100,7 +106,6 @@ public class CustomDeamon implements Runnable {
 
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return (lockedIdList.size() == 0) ? true : false; 
+		return (lockedIdList.size() == 0) ? true : false;
 	}
-
 }

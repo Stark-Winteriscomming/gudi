@@ -57,12 +57,4 @@ public class UserTest {
 	/**
 	 * 
 	 */
-	@Test
-	public void test() {
-		CustomDeamon c = new CustomDeamon();
-		c.add("abc");
-		c.add("bcd");
-		Thread t = new Thread(c); 
-		t.start();
-	}
 }

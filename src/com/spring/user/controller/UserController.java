@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.spring.board.vo.CodeVo;
 import com.spring.common.CommonUtil;
 import com.spring.user.service.CustomDeamon;
 import com.spring.user.service.UserService;
+import com.spring.user.service.impl.AsyncTaskService;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -24,11 +27,11 @@ public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	@Autowired
-	private UserService userService; 
+	@Resource(name="asyncTaskService")
+	private AsyncTaskService asyncTaskService;
 	
 	@Autowired
-	private CustomDeamon CustomDeamon; 
+	private UserService userService; 
 	
 	@ResponseBody
 	@RequestMapping(value = "/selectPhoneType/{codeType}", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
@@ -46,24 +49,33 @@ public class UserController {
 		String leftTime="";
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		if(!CustomDeamon.isExist(id)) CustomDeamon.add(id);
+		if(asyncTaskService.initFlag == 0) {
+			asyncTaskService.run();
+			asyncTaskService.initFlag = 1;
+		}
+			
+		if(!asyncTaskService.isExist(id)) {
+			System.out.println(">>> adding...");
+			asyncTaskService.add(id);
+		} 
 		else {
-			for(int i=0; i<CustomDeamon.lockedIdList.size(); i++) {
-				Iterator iterator = CustomDeamon.lockedIdList.get(i).keySet().iterator();
+			System.out.println("size: " + asyncTaskService.lockedIdList.size());
+			for(int i=0; i<asyncTaskService.lockedIdList.size(); i++) {
+				Iterator iterator = asyncTaskService.lockedIdList.get(i).keySet().iterator();
 				while(iterator.hasNext()) {
 					String key = (String)iterator.next();
 					if(key.equals(id)) {
-						leftTime = (String)(CustomDeamon.lockedIdList.get(i).get(key));
+						leftTime = (String)(asyncTaskService.lockedIdList.get(i).get(key));
 					}    
 				}
 			}
 		}
 		
 		result.put("leftTime", leftTime); 
-		CustomDeamon.initFlag = 1; 		
 		
 		
-		return CommonUtil.getJsonCallBackString(" ", userService.checkDuplicatedId(id));
+//		return CommonUtil.getJsonCallBackString(" ", userService.checkDuplicatedId(id));
+		return CommonUtil.getJsonCallBackString(" ", result);
 	}
 	
 	

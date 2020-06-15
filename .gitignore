@@ -8,4 +8,4 @@ bin/
 .tern-project
 META-INF/
 build.properties
-
+WebContent/WEB-INF/lib/
