@@ -13,6 +13,7 @@
 	<form class="cmxform" id="commentForm" method="get" >
 	<fieldset>
 	<table align="center">
+		<tr><td align="left"><a href="/board/list">List</a></td></tr>
 		<tr>
 			<td>
 				<form id="frm_input">
@@ -55,8 +56,9 @@
 									<select id="sel_user_phone1" name="user_phone1">
 										<option>선택</option>
 									</select>
-									<input type="number" style="width : 60px" id="user_phone2"  name="user_phone2" required oninput="maxLengthCheck(this)" /> 
-									<input type="number" style="width : 60px" id="user_phone3" name="user_phone3" required oninput="maxLengthCheck(this)"/>
+									<input type="number" style="width : 60px" id="user_phone2" name="user_phone2" oninput="maxLengthCheck(this)" /> 
+									<input type="number" style="width : 60px" id="user_phone3" name="user_phone3" oninput="maxLengthCheck(this)"/>
+									<span id="error_msg"></span>
 								</div>
 							</td>
 						</tr>
@@ -78,7 +80,7 @@
 						</tr>
 						<tr>
 							<td width="120" align="center">company</td>
-							<td width="300">
+							<td width="500">
 								<div>
 									<input type="text" name="user_company">
 								</div>
@@ -92,11 +94,6 @@
 		<tr>
 			<td>
 				<button id="btn_join">join</button>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<a href="/board/boardList.do">List</a>
 			</td>
 		</tr>
 	</table>

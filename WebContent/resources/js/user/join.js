@@ -6,13 +6,17 @@ function maxLengthCheck(object){
 
 
 $j(document).ready(function() {
-	$j("#user_phone2").on("focusout", function(){
-		console.log(">>" + $j("#user_phone2").val().length)
-		if(!($j("#user_phone2").length == 4 && $j("#user_phone3").length == 4)) alert('nn')
+	//phonen 4자리 validation 
+	$j("#user_phone2, #user_phone3").on("focusout", function(){
+		if(!($j("#user_phone2").val().length == 4 && $j("#user_phone3").val().length == 4)){
+			$j("#error_msg").text("4자리만 가능"); 
+		}else $j("#error_msg").text("");
 	})
-	$j("#user_phone3").on("focusout", function(){
-		if(!($j("#user_phone2").length == 4 && $j("#user_phone3").length == 4)) alert('nn')
-	})
+	
+//	$j("#user_phone3").on("focusout", function(){
+//		if(!($j("#user_phone2").val().length == 4 && $j("#user_phone3").val().length == 4)) console.log('nn')
+//	})
+	
 	ajaxObj.getOptions("/user/selectPhoneType/", null, $j("#sel_user_phone1"), "phone", "select"); 
 	//
 	$j("#btn_duplicate_check").on("click", function(){
@@ -23,7 +27,7 @@ $j(document).ready(function() {
 			dataType : "json",
 			type : "GET",
 			success : function(data, textStatus, jqXHR) {
-				console.log(data); 
+				alert(data.leftTime); 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert("실패");
@@ -58,7 +62,7 @@ $j(document).ready(function() {
 }, "비밀번호 불일치");
 	
 	$j.validator.addMethod("postNumCheck", function(value, element) {
-		  return /^[0-9][0-9][0-9]-[0-9][0-9][0-9]$/.test(value);
+		  return this.optional(element) || /^[0-9][0-9][0-9]-[0-9][0-9][0-9]$/.test(value);
 		}, "형태: xxx-xxx => x는 숫자, ex) 123-123 " );
 		
 	$j.validator.addMethod("engCheck", function(value, element) {

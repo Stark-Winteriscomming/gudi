@@ -1,5 +1,8 @@
 package test.user;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +10,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.spring.board.service.BoardService;
+import com.spring.user.service.CustomDeamon;
 import com.spring.user.service.UserService;
 import com.spring.user.vo.UserVo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:WEB-INF/spring/root-context.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath:WEB-INF/spring/root-context.xml")
 public class UserTest {
 	@Autowired
 	BoardService bsv;
@@ -19,7 +23,6 @@ public class UserTest {
 	@Autowired
 	UserService usv;
 
-	@Test
 	public void userInsert() {
 		// TODO Auto-generated method stub
 
@@ -46,9 +49,20 @@ public class UserTest {
 		}
 	}
 
-	@Test
 	public void checkDupeId() {
 		String id = "abc_8";
 		System.out.println(usv.checkDuplicatedId(id));
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void test() {
+		CustomDeamon c = new CustomDeamon();
+		c.add("abc");
+		c.add("bcd");
+		Thread t = new Thread(c); 
+		t.start();
 	}
 }
