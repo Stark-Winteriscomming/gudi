@@ -49,31 +49,33 @@ public class UserController {
 		String leftTime="";
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		if(asyncTaskService.initFlag == 0) {
-			asyncTaskService.run();
-			asyncTaskService.initFlag = 1;
-		}
-			
-		if(!asyncTaskService.isExist(id)) {
-			System.out.println(">>> adding...");
-			asyncTaskService.add(id);
-		} 
-		else {
-			System.out.println("size: " + asyncTaskService.lockedIdList.size());
-			for(int i=0; i<asyncTaskService.lockedIdList.size(); i++) {
-				Iterator iterator = asyncTaskService.lockedIdList.get(i).keySet().iterator();
-				while(iterator.hasNext()) {
-					String key = (String)iterator.next();
-					if(key.equals(id)) {
-						leftTime = (String)(asyncTaskService.lockedIdList.get(i).get(key));
-					}    
-				}
-			}
-		}
+//		if(asyncTaskService.initFlag == 0) {
+//			asyncTaskService.run();
+//			asyncTaskService.initFlag = 1;
+//		}
+//			
+//		if(!asyncTaskService.isExist(id)) {
+//			System.out.println(">>> adding...");
+//			asyncTaskService.add(id);
+//		} 
+//		else {
+//			System.out.println("size: " + asyncTaskService.lockedIdList.size());
+//			for(int i=0; i<asyncTaskService.lockedIdList.size(); i++) {
+//				Iterator iterator = asyncTaskService.lockedIdList.get(i).keySet().iterator();
+//				while(iterator.hasNext()) {
+//					String key = (String)iterator.next();
+//					if(key.equals(id)) {
+//						leftTime = (String)(asyncTaskService.lockedIdList.get(i).get(key));
+//					}    
+//				}
+//			}
+//		}
 		
 		result.put("leftTime", leftTime); 
 		
 		
+		String msg = ((userService.checkDuplicatedId(id)) == 0) ? "ndupe" : "dupe";
+		result.put("msg", msg);
 //		return CommonUtil.getJsonCallBackString(" ", userService.checkDuplicatedId(id));
 		return CommonUtil.getJsonCallBackString(" ", result);
 	}

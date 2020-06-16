@@ -1,9 +1,8 @@
-function maxLengthCheck(object){
-    if (object.value.length > 4){
-      object.value = object.value.slice(0, 4);
+function maxLengthCheck(object, length){
+    if (object.value.length > length){
+      object.value = object.value.slice(0, length);
     }    
 }
-
 
 $j(document).ready(function() {
 	//phonen 4자리 validation 
@@ -27,7 +26,16 @@ $j(document).ready(function() {
 			dataType : "json",
 			type : "GET",
 			success : function(data, textStatus, jqXHR) {
-				alert(data.leftTime); 
+				if(data.msg == 'dupe'){
+					$j("input[name=user_id]").data("check", "unchecked");
+					alert("중복됨 다른 아이디 입력바람") 
+				}else{
+					$j("input[name=user_id]").data("check", "checked");
+					alert("가능")
+				}
+//				 ? "가능" : "중복!";
+//				alert(msg);
+//				data.leftTime
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert("실패");
@@ -36,22 +44,31 @@ $j(document).ready(function() {
 	})
 	
 	 
-	$j("#commentForm").validate({
+	$j("#frm_join").validate({
 		rules: {
 			user_pw_check : {
+				pwSameCheck: true
+			},
+			user_check : {
 				pwSameCheck: true
 			},
 			user_addr1 : {
 				postNumCheck : true
 			}, 
 			user_id : {
-				engCheck : true
+				engCheck : true,
+				dupCheck : true
 			},
+			user_name : {
+				hanCheck : true,
+				required : true
+			}
 		}, 
 // 		message:{
 // 			user_pw_check : {
 // 				domain: "not equal"
-// 			}		
+// 			}, 
+//			user_id : "중복체크해라"		
 // 		}
 	});
 	
@@ -65,7 +82,14 @@ $j(document).ready(function() {
 		  return this.optional(element) || /^[0-9][0-9][0-9]-[0-9][0-9][0-9]$/.test(value);
 		}, "형태: xxx-xxx => x는 숫자, ex) 123-123 " );
 		
+	$j.validator.addMethod("hanCheck", function(value, element) {
+		  return /^[가-힣]+$/.test(value);
+		}, "한글음절만 가능(최대 4글자)" );
+		
 	$j.validator.addMethod("engCheck", function(value, element) {
 		  return /^[a-zA-Z0-9]*$/ .test(value);
 		}, "영어, 숫자만 기술" )
+	$j.validator.addMethod("dupCheck", function(value, element) {
+		  return (($j("input[name=user_id]").data("check")) =='checked' ? true : false);
+		}, "중복확인 바람" )
 });
