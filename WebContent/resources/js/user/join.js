@@ -5,6 +5,11 @@ function maxLengthCheck(object, length){
 }
 
 $j(document).ready(function() {
+	
+	 $j("#user_id").on('focusout',function(e){
+      e.stopPropagation();
+    });
+
 	//phonen 4자리 validation 
 	$j("#user_phone2, #user_phone3").on("focusout", function(){
 		if(!($j("#user_phone2").val().length == 4 && $j("#user_phone3").val().length == 4)){
@@ -19,8 +24,14 @@ $j(document).ready(function() {
 	ajaxObj.getOptions("/user/selectPhoneType/", null, $j("#sel_user_phone1"), "phone", "select"); 
 	//
 	$j("#btn_duplicate_check").on("click", function(){
-		const user_id = $j("input[name=user_id]").val()
-		console.log("userid: " + user_id);
+		const userObj = $j("input[name=user_id]");
+		const user_id = userObj.val()
+		
+		if(user_id == ''){
+			alert('아이디를 입력해주세요');
+			return false;
+		}
+		
 		$j.ajax({	
 			url : "/user/check/dupe/" + user_id,
 			dataType : "json",
@@ -43,8 +54,14 @@ $j(document).ready(function() {
 		});	
 	})
 	
-	 
+ 
 	$j("#frm_join").validate({
+//		onfocusout : function(element){
+//			var element_id = $(element).attr('id');
+//        	if (element_id == 'user_id') {
+//            $.validator.defaults.onkeyup.apply(this, arguments);
+//        }	
+//		},
 		rules: {
 			user_pw_check : {
 				pwSameCheck: true
@@ -57,7 +74,8 @@ $j(document).ready(function() {
 			}, 
 			user_id : {
 				engCheck : true,
-				dupCheck : true
+				dupCheck : true,
+				onfocusout : true
 			},
 			user_name : {
 				hanCheck : true,
