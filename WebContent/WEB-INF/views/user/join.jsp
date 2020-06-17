@@ -25,9 +25,7 @@
 							<td width="120" align="center">id</td>
 							<td width="300">
 								<div>
-									<input type="text" id="user_id" name="user_id" data-check="unchecked" required>
-									<button class="no" id="btn_duplicate_check">중복확인</button>
-									<label class="error" for="user_id"></label>
+									<input type="text" class="ignore" id="user_id" name="user_id" data-check="unchecked"> <input type="button" id="btn_duplicate_check" value="중복확인"> <label class="error" id="lbl_user_id" for="user_id"></label>
 								</div>
 							</td>
 						</tr>
@@ -58,9 +56,13 @@
 							<td width="300">
 								<div>
 									<select id="sel_user_phone1" name="user_phone1">
-										<option>선택</option>
+										<option value="default" selected>선택</option>
 									</select>
-									<input type="number" style="width: 60px" id="user_phone2" name="user_phone2" oninput="maxLengthCheck(this, 4)" /> <input type="number" style="width: 60px" id="user_phone3" name="user_phone3" oninput="maxLengthCheck(this, 4)" /> <span id="error_msg"></span>
+									<input type="number" style="width: 60px" id="user_phone2" name="user_phone2" fix=4 oninput="maxLengthCheck(this, 4)" /> 
+									<input type="number" style="width: 60px" id="user_phone3" name="user_phone3" fix=4 oninput="maxLengthCheck(this, 4)" /> 
+<!-- 									<label class="error" for="user_phone2 user_phone3"></label>  -->
+<!-- 									<label class="error" for=""></label>  -->
+									<label id="lbl_phone"></label>
 								</div>
 							</td>
 						</tr>

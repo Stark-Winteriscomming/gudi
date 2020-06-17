@@ -5,17 +5,19 @@ function maxLengthCheck(object, length){
 }
 
 $j(document).ready(function() {
-	
-	 $j("#user_id").on('focusout',function(e){
-      e.stopPropagation();
-    });
-
-	//phonen 4자리 validation 
-	$j("#user_phone2, #user_phone3").on("focusout", function(){
-		if(!($j("#user_phone2").val().length == 4 && $j("#user_phone3").val().length == 4)){
-			$j("#error_msg").text("4자리만 가능"); 
-		}else $j("#error_msg").text("");
-	})
+	$j("#user_phone2, #user_phone3").on("propertychange change paste input", function(){
+		if(($j("#user_phone2").val().length) == 4 && ($j("#user_phone3").val().length == 4)){
+			$j("#lbl_phone").text("");
+		}else if(($j("#user_phone2").val() != '') || ($j("#user_phone3").val() != '')){
+			$j("#lbl_phone").text("중간, 뒷자리는 4자리 고정");
+		}
+	});
+//	//phonen 4자리 validation 
+//	$j("#user_phone2, #user_phone3").on("focusout", function(){
+//		if(!($j("#user_phone2").val().length == 4 && $j("#user_phone3").val().length == 4)){
+//			$j("#error_msg").text("4자리만 가능"); 
+//		}else $j("#error_msg").text("");
+//	})
 	
 //	$j("#user_phone3").on("focusout", function(){
 //		if(!($j("#user_phone2").val().length == 4 && $j("#user_phone3").val().length == 4)) console.log('nn')
@@ -26,7 +28,10 @@ $j(document).ready(function() {
 	$j("#btn_duplicate_check").on("click", function(){
 		const userObj = $j("input[name=user_id]");
 		const user_id = userObj.val()
-		
+		if(/^[a-zA-Z0-9]*$/.test(user_id) == false){
+			alert("숫자와 영문만가능");
+			return false;
+		} 
 		if(user_id == ''){
 			alert('아이디를 입력해주세요');
 			return false;
@@ -37,23 +42,26 @@ $j(document).ready(function() {
 			dataType : "json",
 			type : "GET",
 			success : function(data, textStatus, jqXHR) {
+				const userIdObj = $j("input[name=user_id]");
 				if(data.msg == 'dupe'){
-					$j("input[name=user_id]").data("check", "unchecked");
+					userIdObj.data("check", "unchecked");
 					alert("중복됨 다른 아이디 입력바람") 
 				}else{
-					$j("input[name=user_id]").data("check", "checked");
+					userIdObj.data("check", "checked");
+					$j("#lbl_user_id").text("가능");
+					userIdObj.on("propertychange change paste input", function(){
+						userIdObj.data("check", "unchecked");
+						$j("#lbl_user_id").text("");	
+						userIdObj.off("propertychange change paste input");
+					})
 					alert("가능")
 				}
-//				 ? "가능" : "중복!";
-//				alert(msg);
-//				data.leftTime
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert("실패");
 			}
 		});	
 	})
-	
  
 	$j("#frm_join").validate({
 //		onfocusout : function(element){
@@ -62,6 +70,12 @@ $j(document).ready(function() {
 //            $.validator.defaults.onkeyup.apply(this, arguments);
 //        }	
 //		},
+//		ignore : ".ignore",
+		onfocusout : function (element){
+			if($j(element).attr("id") == "user_id"){
+				return false;
+			}else return true;
+		},
 		rules: {
 			user_pw_check : {
 				pwSameCheck: true
@@ -73,15 +87,54 @@ $j(document).ready(function() {
 				postNumCheck : true
 			}, 
 			user_id : {
+				required : true,
 				engCheck : true,
-				dupCheck : true,
-				onfocusout : true
+				dupCheck : true
+
 			},
 			user_name : {
 				hanCheck : true,
 				required : true
+			},
+			user_phone1 : {
+				phoneCheck : true
+			}, 
+			user_phone2 : {
+				phoneCheck : true
+			}, 
+			user_phone3 : {
+				phoneCheck : true
+			},
+			
+		},
+		submitHandler: function() {
+			const idObj =  $j("input[name=user_id]");
+			if(idObj.data("check") == 'checked'){
+				alert('p');
+			}else{
+				alert('아이디 중복체크하세요');
+				idObj.focus();
+			} 
+		},
+		invalidHandler: function(event, validator){
+			var errors = validator.numberOfInvalids();
+			if(errors){
+				if($j("input[name=user_id]").val() == ''){
+					$j("#lbl_user_id").text("필수 항목입니다.");
+					//$j("input[name=user_id]").prop('required',true);
+					//$j("#frm_join").valid();
+				}
+				if(($j("input[name=user_id]").val() != '') && ($j("input[name=user_id]").data("check") =='unchecked')){
+					$j("#lbl_user_id").text("중복확인필요");
+				}
+				if(($j("#user_phone2").val() == '') && ($j("#user_phone3").val() == '')){
+					$j("#lbl_phone").text("필수 항목입니다.");
+				}else if(($j("#user_phone1 > option:selected").val() != 'default') && ($j("#user_phone2").val().length != 4) && ($j("#user_phone3").val().length != 4)){
+					$j("#lbl_phone").text("앞자리는 꼭 선택, 중간, 뒷자리는 4자리 고정");
+				}
 			}
-		}, 
+		}
+
 // 		message:{
 // 			user_pw_check : {
 // 				domain: "not equal"
@@ -109,5 +162,8 @@ $j(document).ready(function() {
 		}, "영어, 숫자만 기술" )
 	$j.validator.addMethod("dupCheck", function(value, element) {
 		  return (($j("input[name=user_id]").data("check")) =='checked' ? true : false);
-		}, "중복확인 바람" )
+		}, "중복체크 바람." )
+	$j.validator.addMethod("phoneCheck", function(value, element) {
+		  return (($j("#user_phone1 > option:selected").val() != 'default') && ($j("#user_phone2").val().length) == 4 && ($j("#user_phone3").val().length == 4));
+		}, "" )
 });

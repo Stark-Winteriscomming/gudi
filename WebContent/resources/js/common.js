@@ -5,7 +5,6 @@ const ajaxObj = {
 				dataType : "json",
 				type : "GET",
 				success : function(data, textStatus, jqXHR) {
-					console.log(domTargetTagName)
 					if(domTargetTagName == "select"){
 						for (i = 0; i < data.length; i++) {
 							domTarget.append("<option value=" + "'" + data[i].code_id + "'>" + data[i].code_name +"</option>" );
