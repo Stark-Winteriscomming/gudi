@@ -10,8 +10,12 @@
     	SELECT COUNT(USER_ID) FROM USER_INFO WHERE USER_ID = #{id} 
     </select>
     
+    <select id="login" parameterType="userVo" resultType="i">
+    	SELECT COUNT(USER_ID) FROM USER_INFO WHERE USER_ID = #{user_id} AND USER_PW = #{user_pw} 
+    </select>
+    
     <insert id="registerUser" parameterType="userVo">
     	Insert into USER_INFO (USER_ID,USER_PW,USER_NAME,USER_PHONE1,USER_PHONE2,USER_PHONE3,USER_ADDR1,USER_ADDR2,USER_COMPANY,CREATOR,CREATE_TIME,MODIFIER,MODIFIED_TIME) values 
-    	(#{user_id},#{user_pw},#{user_name},#{user_phone1},#{user_phone2},#{user_phone3},#{user_addr1},#{user_addr2},#{user_company},null,null,null,null)
+    	(#{user_id},#{user_pw},#{user_name},#{user_phone1},#{user_phone2},#{user_phone3},#{user_addr1},#{user_addr2},#{user_company},#{user_id},sysdate,#{user_id},sysdate)
     </insert> 
 </mapper>

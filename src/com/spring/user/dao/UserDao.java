@@ -9,4 +9,5 @@ public interface UserDao {
 	public List<CodeVo> getUserPhoneType(String codeType);
 	int registerUser(UserVo userVo);
 	public int checkDuplicatedId(String id);
+	public int login(UserVo userVo);
 }

@@ -25,6 +25,14 @@ $j(document).ready(function() {
 	
 	ajaxObj.getOptions("/user/selectPhoneType/", null, $j("#sel_user_phone1"), "phone", "select"); 
 	//
+	$j("#btn_reset").on("click", function(){
+		$j(".error").text("");
+		$j("#frm_join")[0].reset();
+		ajaxObj.getOptions("/user/selectPhoneType/", null, $j("#sel_user_phone1"), "phone", "select");
+		$j(".phone-error").css("display", "none"); 
+	})
+	
+	//
 	$j("#btn_duplicate_check").on("click", function(){
 		const userObj = $j("input[name=user_id]");
 		const user_id = userObj.val()
@@ -97,20 +105,21 @@ $j(document).ready(function() {
 				required : true
 			},
 			user_phone1 : {
-				phoneCheck : true
-			}, 
-			user_phone2 : {
-				phoneCheck : true
-			}, 
-			user_phone3 : {
-				phoneCheck : true
+				isSelected : true
 			},
-			
+			user_phone2 : {
+				required : true,
+				lengthCheck :true
+			},
+			user_phone3 : {
+				required : true,
+				lengthCheck :true
+			}, 
 		},
-		submitHandler: function() {
+		submitHandler: function(form) {
 			const idObj =  $j("input[name=user_id]");
 			if(idObj.data("check") == 'checked'){
-				alert('p');
+				form.submit();
 			}else{
 				alert('아이디 중복체크하세요');
 				idObj.focus();
@@ -166,4 +175,11 @@ $j(document).ready(function() {
 	$j.validator.addMethod("phoneCheck", function(value, element) {
 		  return (($j("#user_phone1 > option:selected").val() != 'default') && ($j("#user_phone2").val().length) == 4 && ($j("#user_phone3").val().length == 4));
 		}, "" )
+	$j.validator.addMethod("isSelected", function(value, element) {
+		  return (($j("#sel_user_phone1 > option:selected").val() != 'default'))
+		}, "앞자리 선택," )
+	$j.validator.addMethod("lengthCheck", function(value, element) {
+		  return (value.length == 4)
+		}, "4자리 입력," )
+	
 });

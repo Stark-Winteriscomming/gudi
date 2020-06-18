@@ -1,7 +1,6 @@
 package com.spring.user.controller;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.board.vo.CodeVo;
 import com.spring.common.CommonUtil;
-import com.spring.user.service.CustomDeamon;
 import com.spring.user.service.UserService;
 import com.spring.user.service.impl.AsyncTaskService;
+import com.spring.user.vo.UserVo;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -73,7 +72,6 @@ public class UserController {
 		
 		result.put("leftTime", leftTime); 
 		
-		
 		String msg = ((userService.checkDuplicatedId(id)) == 0) ? "ndupe" : "dupe";
 		result.put("msg", msg);
 //		return CommonUtil.getJsonCallBackString(" ", userService.checkDuplicatedId(id));
@@ -82,9 +80,32 @@ public class UserController {
 	
 	
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
-	public String userJoin() throws Exception {
-		
-		
+	public String userJoinForm() throws Exception {
 		return "user/join";
 	}
+	
+	@RequestMapping(value = "/join", method = RequestMethod.POST)
+	public String userJoin(UserVo userVo) throws Exception {
+		return ((userService.registerUser(userVo) == 1 ? "/user/joinSuccess" : "/user/joinFail"));  
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String userLoginForm() throws Exception {
+		return "/user/login";  
+	}
+	
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@ResponseBody
+	public String userLogin(UserVo userVo) throws Exception {
+		HashMap<String, String> data = new HashMap<String, String>();
+		CommonUtil commonUtil = new CommonUtil();
+		int result = userService.login(userVo);
+		if(result == 1) {
+			data.put("msg", "Y");
+		}else  data.put("msg", "N");
+		
+		return CommonUtil.getJsonCallBackString(" ", data);	
+	}
 }
+

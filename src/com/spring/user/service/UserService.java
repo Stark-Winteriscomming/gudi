@@ -12,5 +12,7 @@ public interface UserService {
 	int registerUser(UserVo userVo);
 
 	int checkDuplicatedId(String id);
+
+	int login(UserVo userVo);
 	
 }

@@ -34,4 +34,10 @@ public class UserServiceImpl implements UserService{
 		return userDao.checkDuplicatedId(id);
 	}
 
+	@Override
+	public int login(UserVo userVo) {
+		// TODO Auto-generated method stub
+		return userDao.login(userVo);
+	}
+
 }

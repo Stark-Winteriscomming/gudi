@@ -34,5 +34,11 @@ public class UserDaoImpl implements UserDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + "checkDuplicatedId", id);
 	}
+
+	@Override
+	public int login(UserVo userVo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + "login", userVo);
+	}
 	
 }
