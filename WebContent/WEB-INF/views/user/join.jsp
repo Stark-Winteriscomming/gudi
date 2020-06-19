@@ -84,7 +84,7 @@ label {
 							<td width="120" align="center">postNo</td>
 							<td width="300">
 								<div>
-									<input type="text" name="user_addr1">
+									<input type="text" id="user_addr1" name="user_addr1">
 								</div>
 							</td>
 						</tr>

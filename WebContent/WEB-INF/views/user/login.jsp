@@ -10,7 +10,7 @@
 <script src="/resources/js/user/login.js"></script>
 </head>
 <body>
-	<form id="frm_login">
+	<form id="frm_login" method="post">
 		<table align="center">
 			<tr>
 				<td>
