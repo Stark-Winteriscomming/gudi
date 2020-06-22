@@ -1,9 +1,13 @@
+function maxLengthCheck(object, length) {
+	if (object.value.length > length) {
+		alert("최대 값: " + length + " 초과");
+		object.value = object.value.slice(0, length);
+	}
+}
+
 $j(document).ready(function() {
 	$j("#btn_login").on("click", function(){
-//		alert($j("#frm_login :input").serialize())
-//		var data = {"user_id":"xxx", "user_pw22":"123"};
-		afterLoginLink = "/user/login";
-
+		afterLoginLink = "/board/list";
 		$j.ajax({
 			url : "/user/login",
 			dataType : "json",
@@ -16,7 +20,13 @@ $j(document).ready(function() {
 
 				}else {
 					alert("로그인 실패");
-					location.href = afterLoginLink;
+					if(data.idExistMsg == "exist"){
+						alert("비밀번호 불일치");
+						$j("input[name=user_pw]").focus();
+					}else{
+						alert("아이디 불일치");
+					}
+					//location.href = afterLoginLink;
 				} 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {

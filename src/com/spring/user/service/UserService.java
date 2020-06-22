@@ -14,5 +14,7 @@ public interface UserService {
 	int checkDuplicatedId(String id);
 
 	int login(UserVo userVo);
+
+	UserVo getUser(String user_id);
 	
 }

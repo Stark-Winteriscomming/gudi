@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +32,7 @@ public class UserController {
 	private AsyncTaskService asyncTaskService;
 	
 	@Autowired
-	private UserService userService; 
+	private UserService userService;
 	
 	@ResponseBody
 	@RequestMapping(value = "/selectPhoneType/{codeType}", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
@@ -78,7 +80,6 @@ public class UserController {
 		return CommonUtil.getJsonCallBackString(" ", result);
 	}
 	
-	
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String userJoinForm() throws Exception {
 		return "user/join";
@@ -97,15 +98,24 @@ public class UserController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
-	public String userLogin(UserVo userVo) throws Exception {
+	public String userLogin(HttpServletRequest req, UserVo userVo) throws Exception {
 		HashMap<String, String> data = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 		int result = userService.login(userVo);
 		if(result == 1) {
+			HttpSession session = req.getSession();
+			String user_id = userVo.getUser_id();
+			session.setAttribute("userVo", (UserVo)userService.getUser(user_id));
 			data.put("msg", "Y");
 		}else  data.put("msg", "N");
-		
+		String idExistMsg = ((userService.checkDuplicatedId(userVo.getUser_id())) == 0) ? "none"  : "exist";
+		data.put("idExistMsg", idExistMsg);
 		return CommonUtil.getJsonCallBackString(" ", data);	
+	}
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String userLogout(HttpServletRequest req) throws Exception {
+		req.getSession().invalidate();
+		return "redirect:/board/list";
 	}
 }
 

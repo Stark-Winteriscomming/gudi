@@ -38,14 +38,14 @@ label {
 						<tr>
 							<td width="120" align="center">pw</td>
 							<td width="400">
-								<input type="text" name="user_pw" minlength="6" maxlength="12" required>
+								<input type="password" name="user_pw" minlength="6" maxlength="12" required>
 							</td>
 						</tr>
 						<tr>
 							<td width="120" align="center">pw check</td>
 							<td width="300">
 								<div>
-									<input type="text" name="user_pw_check" required>
+									<input type="password" name="user_pw_check" required>
 								</div>
 							</td>
 						</tr>

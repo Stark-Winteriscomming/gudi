@@ -10,4 +10,5 @@ public interface UserDao {
 	int registerUser(UserVo userVo);
 	public int checkDuplicatedId(String id);
 	public int login(UserVo userVo);
+	public UserVo getUser(String user_id);
 }

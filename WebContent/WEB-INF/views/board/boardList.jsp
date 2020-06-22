@@ -10,6 +10,8 @@
 <script src="/resources/js/board/boardList.js"></script>
 <body>
 	<table align="center">
+		<tr><td>${userVo.user_name}</td></tr>
+		<c:if test="${userVo == null}"><tr><td align="right"><a href="/user/join">회원가입</a></td></tr></c:if>
 		<tr>
 			<td align="right">total : ${totalCnt}</td>
 		</tr>
@@ -35,7 +37,15 @@
 		</tr>
 		<tr>
 			<td align="right">
-				<a href="/board/boardWrite.do">글쓰기</a>
+				<c:if test="${userVo == null}">
+					<a href="/user/login">로그인</a>
+				</c:if>
+				<c:if test="${userVo != null}">
+					<a href="/user/logout">로그아웃</a>
+				</c:if>
+				<c:if test="${userVo != null}">
+					<a href="/board/boardWrite.do">글쓰기</a>
+				</c:if>
 			</td>
 		</tr>
 		<tr>
@@ -56,7 +66,7 @@
 						<li class="page-item"><a class="page-link" href="/board/list?pageNum=${pgvo.startPage-1 }&amount=${pgvo.cri.amount}">Prev</a></li>
 					</c:if>
 					<c:forEach var="i" begin="${pgvo.startPage }" end="${pgvo.endPage }">
-						<li class="page-item ${pgvo.cri.pageNum == i ? 'active' : '' }"><a class="page-link" href="/board/boardList.do?pageNum=${i }&amount=${pgvo.cri.amount}">${i }</a></li>
+						<li class="page-item ${pgvo.cri.pageNum == i ? 'active' : '' }"><a class="page-link" href="/board/list?pageNum=${i }&amount=${pgvo.cri.amount}">${i }</a></li>
 					</c:forEach>
 					<c:if test="${pgvo.next }">
 						<li class="page-item"><a class="page-link" href="/board/list?pageNum=${pgvo.endPage+1 }&amount=${pgvo.cri.amount}">Next</a></li>

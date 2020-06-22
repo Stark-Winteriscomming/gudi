@@ -6,17 +6,17 @@ function maxLengthCheck(object, length) {
 
 $j(document).ready(function() {
 	$j("#user_addr1").on("property change keyup paste input", function(e) {
-		if(e.type == 'paste'){
+		if (e.type == 'paste') {
 			alert('붙여넣기 허용 안함');
-			return false;	
+			return false;
 		}
 		if (e.type == 'keyup') {
 			var code = e.keyCode || e.which;
 			const v = String.fromCharCode(code)
-			
+
 			const content = $j("#user_addr1");
 			const len = $j("#user_addr1").val().length;
-			if (code != 8 && len == 8)  {
+			if (code != 8 && len == 8) {
 				content.val((content.val().substring(0, len - 1)));
 				return false;
 			}
@@ -45,6 +45,7 @@ $j(document).ready(function() {
 		v = $j("#user_id").val();
 		if (v.length > 7) {
 			alert('7자 초과 안됨');
+			$j("#user_id").val(v.substring(0, v.length - 1))
 			return false;
 		}
 		if ((/[ㄱ-ㅊㅏ-ㅣ가-힣]+/g.test(v)) == true) {
@@ -64,12 +65,22 @@ $j(document).ready(function() {
 		}
 	})
 
-	$j("#user_phone2, #user_phone3").on("propertychange change paste input", function() {
-		if (($j("#user_phone2").val().length) == 4 && ($j("#user_phone3").val().length == 4)) {
-			$j("#lbl_phone").text("");
-		} else if (($j("#user_phone2").val() != '') || ($j("#user_phone3").val() != '')) {
-			$j("#lbl_phone").text("중간, 뒷자리는 4자리 고정");
+	$j("#user_phone2, #user_phone3").on("propertychange change paste input keyup", function(e) {
+		const len = $j(this).val().length;
+		if (e.type == "keyup") {
+			var code = e.keyCode || e.which;
+			const v = String.fromCharCode(code);
+			if (/[0-9]/.test(v) == false && code != 8) {
+				alert('숫자만 입력');
+				if (len == 1) {
+					$j("#user_addr1").val('');
+				}
+				else {
+					$j(this).val(($j(this).val().substring(0, len)))
+				}
+			}
 		}
+
 	});
 
 	ajaxObj.getOptions("/user/selectPhoneType/", null, $j("#sel_user_phone1"), "phone", "select");

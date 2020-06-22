@@ -6,23 +6,25 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="/resources/js/message-jquery-validate.js">
 <script src="/resources/js/common.js"></script>
 <script src="/resources/js/user/login.js"></script>
 </head>
 <body>
-	<form id="frm_login" method="post">
+	<form id="frm_login" method="post" onsubmit="return false;">
 		<table align="center">
+		<tr><td><a href="/board/list">list</a></td></tr>
 			<tr>
 				<td>
 					<table border="1">
 						<tr>
 							<td width="40" align="center">id</td>
-							<td width="40"><input name="user_id" type="text" size="50"></td>
+							<td width="40"><input name="user_id" type="text" size="50" oninput="maxLengthCheck(this, 7)" max="7"></td>
 						</tr>
 						<tr>
 							<td width="40" align="center">password</td>
 							<td width="40">
-								<input name="user_pw" type="password" size="50">
+								<input name="user_pw" type="password" size="50" oninput="maxLengthCheck(this, 12)" min="6" max="12">
 							</td>
 						</tr>
 					</table>
