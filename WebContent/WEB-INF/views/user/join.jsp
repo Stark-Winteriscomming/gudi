@@ -45,7 +45,7 @@ label {
 							<td width="120" align="center">pw check</td>
 							<td width="300">
 								<div>
-									<input type="password" name="user_pw_check" required>
+									<input type="password" name="user_pw_check" minlength="6" maxlength="12" required>
 								</div>
 							</td>
 						</tr>

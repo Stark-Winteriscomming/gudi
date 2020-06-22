@@ -5,7 +5,7 @@ function maxLengthCheck(object, length) {
 }
 
 $j(document).ready(function() {
-	$j("#user_addr1").on("property change keyup paste input", function(e) {
+	$j("#user_addr1").on("keyup paste input", function(e) {
 		if (e.type == 'paste') {
 			alert('붙여넣기 허용 안함');
 			return false;
@@ -18,10 +18,18 @@ $j(document).ready(function() {
 			const len = $j("#user_addr1").val().length;
 			if (code != 8 && len == 8) {
 				content.val((content.val().substring(0, len - 1)));
+				alert('초과');
 				return false;
 			}
 			if (len == 3) {
 				content.val(content.val() + '-');
+			}
+			if (len == 4) {
+				let stmt = content.val();
+				let tmp = content.val()[3];
+				let c = stmt.slice(0, 3);
+				let s = c + "-" + tmp;
+				content.val(s);
 			}
 			if (code == 8 && len == 4) {
 				content.val((content.val().substring(0, len - 1)))
@@ -40,7 +48,6 @@ $j(document).ready(function() {
 			}
 		}
 	})
-
 	$j("#user_id").on('input', function(e) {
 		v = $j("#user_id").val();
 		if (v.length > 7) {
@@ -73,7 +80,7 @@ $j(document).ready(function() {
 			if (/[0-9]/.test(v) == false && code != 8) {
 				alert('숫자만 입력');
 				if (len == 1) {
-					$j("#user_addr1").val('');
+					$j(this).val('');
 				}
 				else {
 					$j(this).val(($j(this).val().substring(0, len)))
@@ -102,6 +109,7 @@ $j(document).ready(function() {
 		}
 		if (user_id == '') {
 			alert('아이디를 입력해주세요');
+			userObj.focus();
 			return false;
 		}
 
@@ -226,5 +234,4 @@ $j(document).ready(function() {
 	$j.validator.addMethod("lengthCheck", function(value, element) {
 		return (value.length == 4)
 	}, "4자리 입력,")
-
 });
