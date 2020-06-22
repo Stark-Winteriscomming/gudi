@@ -5,9 +5,45 @@ function maxLengthCheck(object, length) {
 }
 
 $j(document).ready(function() {
+	$j("#user_addr1").on("property change keyup paste input", function(e) {
+		if(e.type == 'paste'){
+			alert('붙여넣기 허용 안함');
+			return false;	
+		}
+		if (e.type == 'keyup') {
+			var code = e.keyCode || e.which;
+			const v = String.fromCharCode(code)
+			
+			const content = $j("#user_addr1");
+			const len = $j("#user_addr1").val().length;
+			if (code != 8 && len == 8)  {
+				content.val((content.val().substring(0, len - 1)));
+				return false;
+			}
+			if (len == 3) {
+				content.val(content.val() + '-');
+			}
+			if (code == 8 && len == 4) {
+				content.val((content.val().substring(0, len - 1)))
+			}
+			console.log("code: " + code);
+			if (code != undefined) {
+				if (/[0-9]/.test(v) == false && code != 8) {
+					alert('숫자만 입력');
+					if (len == 1) {
+						$j("#user_addr1").val('');
+					}
+					else {
+						content.val((content.val().substring(0, len - 1)))
+					}
+				}
+			}
+		}
+	})
+
 	$j("#user_id").on('input', function(e) {
 		v = $j("#user_id").val();
-		if(v.length > 7){
+		if (v.length > 7) {
 			alert('7자 초과 안됨');
 			return false;
 		}
@@ -18,7 +54,7 @@ $j(document).ready(function() {
 	})
 	$j("#user_name").on('input', function(e) {
 		v = $j("#user_name").val();
-		if(v.length > 4){
+		if (v.length > 4) {
 			alert('4자 초과 안됨');
 			return false;
 		}
@@ -27,22 +63,6 @@ $j(document).ready(function() {
 			$j("#user_name").val(v.replace(/[a-z0-9]+/gi, ''))
 		}
 	})
-	$j("#user_addr1").on('input', function(e) {
-		v = $j("#user_addr1").val();
-		var code = e.keyCode || e.which;
-		console.log(code);
-		console.log(String.fromCharCode(e.keyCode))
-//		if(v.length > 10){
-//			alert('10자 초과 안됨');
-//			return false;
-//		}
-//		if ((/[0-9]+/gi.test(v)) == true) {
-//			alert('한글만 입력');
-//			$j("#user_name").val(v.replace(/[a-z0-9]+/gi, ''))
-//		}
-	})
-	
-	
 
 	$j("#user_phone2, #user_phone3").on("propertychange change paste input", function() {
 		if (($j("#user_phone2").val().length) == 4 && ($j("#user_phone3").val().length == 4)) {

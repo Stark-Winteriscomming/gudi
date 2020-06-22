@@ -12,7 +12,7 @@
 <style type="text/css">
 label {
 	font-size: 10px;
-	color : red;
+	color: red;
 }
 </style>
 </head>
@@ -26,14 +26,12 @@ label {
 					</td>
 				</tr>
 				<tr>
-					<!-- 			<td> -->
 					<table border="1">
 						<tr>
 							<td width="120" align="center">id</td>
 							<td width="300">
 								<div>
-									<input type="text" class="ignore" id="user_id" name="user_id" data-check="unchecked"> <input type="button" id="btn_duplicate_check" value="중복확인"> 
-									<label class="error" id="lbl_user_id" for="user_id"></label>
+									<input type="text" class="ignore" id="user_id" name="user_id" data-check="unchecked"> <input type="button" id="btn_duplicate_check" value="중복확인"> <label class="error" id="lbl_user_id" for="user_id"></label>
 								</div>
 							</td>
 						</tr>
@@ -66,18 +64,13 @@ label {
 									<select id="sel_user_phone1" name="user_phone1">
 										<option value="default" selected>선택</option>
 									</select>
-									<input type="number" style="width: 60px" id="user_phone2" name="user_phone2" fix=4 oninput="maxLengthCheck(this, 4)" /> 
-									<input type="number" style="width: 60px" id="user_phone3" name="user_phone3" fix=4 oninput="maxLengthCheck(this, 4)" /> 
+									<input type="number" style="width: 60px" id="user_phone2" name="user_phone2" fix=4 oninput="maxLengthCheck(this, 4)" /> <input type="number" style="width: 60px" id="user_phone3" name="user_phone3" fix=4 oninput="maxLengthCheck(this, 4)" />
 								</div>
 							</td>
 						</tr>
 						<tr>
-<!-- 							<td width="120" align="center">phone</td> -->
 							<td width="300">
-<!-- 								display:none; -->
-									<label class="error phone-error" style="font-size: 10px;display: none" for="sel_user_phone1"></label>
-									<label class="error phone-error" style="font-size: 10px;display: none" for="user_phone2"></label>
-									<label class="error phone-error" style="font-size: 10px;display: none" for="user_phone3"></label>
+								<label class="error phone-error" style="font-size: 10px; display: none" for="sel_user_phone1"></label> <label class="error phone-error" style="font-size: 10px; display: none" for="user_phone2"></label> <label class="error phone-error" style="font-size: 10px; display: none" for="user_phone3"></label>
 							</td>
 						</tr>
 						<tr>
