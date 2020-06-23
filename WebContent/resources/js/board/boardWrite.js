@@ -17,6 +17,6 @@ $j(document).ready(function() {
 				return false;	
 			}
 			//updateData : function(url, param, type)
-			ajaxObj.updateData("/board/write", $j('.boardWrite :input').serialize(),"POST")
+			ajaxObj.updateData("/board/write", $j('.boardWrite :input').serialize(),"POST","write")
 	});
 });

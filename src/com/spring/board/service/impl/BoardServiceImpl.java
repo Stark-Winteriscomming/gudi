@@ -39,12 +39,13 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public BoardVo selectBoard(String boardType, int boardNum) throws Exception {
+	public BoardVo selectBoard(String boardType, int boardNum, String user_id) throws Exception {
 		// TODO Auto-generated method stub
 		BoardVo boardVo = new BoardVo();
 		
 		boardVo.setBoardType(boardType);
 		boardVo.setBoardNum(boardNum);
+		boardVo.setCreator(user_id);
 		
 		return boardDao.selectBoard(boardVo);
 	}

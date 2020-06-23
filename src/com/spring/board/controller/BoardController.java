@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import com.spring.board.vo.Options;
 import com.spring.board.vo.PageVo;
 import com.spring.board.vo.PagingVo;
 import com.spring.common.CommonUtil;
+import com.spring.user.vo.UserVo;
 
 @Controller
 @RequestMapping(value = "/board")
@@ -109,13 +111,11 @@ public class BoardController {
 		return "board/boardList";
 	}
 
-	@RequestMapping(value = "/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
-	public String boardView(Locale locale, Model model, @PathVariable("boardType") String boardType,
-			@PathVariable("boardNum") int boardNum) throws Exception {
+	@RequestMapping(value = "/{boardType}/{boardNum}/{user_id}/boardView.do", method = RequestMethod.GET)
+	public String boardView(HttpServletRequest req, Locale locale, Model model, @PathVariable("boardType") String boardType,
+			@PathVariable("boardNum") int boardNum, @PathVariable("user_id") String user_id) throws Exception {
 
-		BoardVo boardVo = new BoardVo();
-
-		boardVo = boardService.selectBoard(boardType, boardNum);
+		BoardVo boardVo = boardService.selectBoard(boardType, boardNum, user_id);
 
 		model.addAttribute("boardType", boardType);
 		model.addAttribute("boardNum", boardNum);
@@ -132,11 +132,14 @@ public class BoardController {
 
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardWriteAction(Locale locale, BoardVo boardVo) throws Exception {
+	public String boardWriteAction(HttpServletRequest req, Locale locale, BoardVo boardVo) throws Exception {
 
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		
+		HttpSession httpSession = req.getSession(); 
+		Object obj = httpSession.getAttribute("userVo");
+		UserVo uvo = (UserVo)obj;
+		boardVo.setCreator(uvo.getUser_id());
 		result.put("success", (boardService.boardInsert(boardVo) > 0) ? "Y" : "N");
 		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);

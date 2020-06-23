@@ -19,12 +19,12 @@
 					<table border="1">
 						<tr>
 							<td width="40" align="center">id</td>
-							<td width="40"><input name="user_id" type="text" size="50" oninput="maxLengthCheck(this, 7)" max="7"></td>
+							<td width="40"><input id="user_id" name="user_id" type="text" size="50" oninput="maxLengthCheck(this, 14)" maxLength="15"></td>
 						</tr>
 						<tr>
 							<td width="40" align="center">password</td>
 							<td width="40">
-								<input name="user_pw" type="password" size="50" oninput="maxLengthCheck(this, 12)" min="6" max="12">
+								<input id="user_pw" name="user_pw" type="password" size="50" oninput="maxLengthCheck(this, 12)" minLength="6" maxLength="13">
 							</td>
 						</tr>
 					</table>

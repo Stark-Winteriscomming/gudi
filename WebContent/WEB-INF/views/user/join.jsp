@@ -85,7 +85,7 @@ label {
 							<td width="120" align="center">address</td>
 							<td width="300">
 								<div>
-									<input type="text" name="user_addr2">
+									<input type="text" name="user_addr2" maxLength="61" oninput="maxLengthCheck(this, 60)">
 								</div>
 							</td>
 						</tr>
@@ -93,7 +93,7 @@ label {
 							<td width="120" align="center">company</td>
 							<td width="500">
 								<div>
-									<input type="text" name="user_company">
+									<input type="text" name="user_company" maxLength="31" oninput="maxLengthCheck(this, 30)">
 								</div>
 							</td>
 						</tr>
