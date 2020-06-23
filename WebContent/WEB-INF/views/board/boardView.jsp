@@ -41,7 +41,7 @@
 						</tr>
 						<tr>
 							<td align="center">Writer</td>
-							<td></td>
+							<td>${board.user_name}</td>
 						</tr>
 					</table>
 				</form>

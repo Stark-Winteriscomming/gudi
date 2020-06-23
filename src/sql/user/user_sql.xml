@@ -3,23 +3,57 @@
 <mapper namespace="user">
 
     <select id="getUserPhoneType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
-    	SELECT * FROM COM_CODE WHERE CODE_TYPE = #{codeType}
+    	SELECT * 
+    	FROM COM_CODE 
+    	WHERE CODE_TYPE = #{codeType}
     </select>
     
     <select id="getUser" resultType="userVo" parameterType="str">
-    	SELECT * FROM USER_INFO WHERE USER_ID = #{user_id}
+    	SELECT * 
+    	FROM USER_INFO 
+    	WHERE USER_ID = #{user_id}
     </select>
     
     <select id="checkDuplicatedId" parameterType="str" resultType="i">
-    	SELECT COUNT(USER_ID) FROM USER_INFO WHERE USER_ID = #{id} 
+		SELECT Count(user_id) 
+		FROM   user_info 
+		WHERE  user_id = #{id}     
     </select>
     
     <select id="login" parameterType="userVo" resultType="i">
-    	SELECT COUNT(USER_ID) FROM USER_INFO WHERE USER_ID = #{user_id} AND USER_PW = #{user_pw} 
+		SELECT Count(user_id) 
+		FROM   user_info 
+		WHERE  user_id = #{user_id} 
+		       AND user_pw = #{user_pw}   
     </select>
     
     <insert id="registerUser" parameterType="userVo">
-    	Insert into USER_INFO (USER_ID,USER_PW,USER_NAME,USER_PHONE1,USER_PHONE2,USER_PHONE3,USER_ADDR1,USER_ADDR2,USER_COMPANY,CREATOR,CREATE_TIME,MODIFIER,MODIFIED_TIME) values 
-    	(#{user_id},#{user_pw},#{user_name},#{user_phone1},#{user_phone2},#{user_phone3},#{user_addr1},#{user_addr2},#{user_company},#{user_id},sysdate,#{user_id},sysdate)
+		INSERT INTO user_info 
+		            (user_id, 
+		             user_pw, 
+		             user_name, 
+		             user_phone1, 
+		             user_phone2, 
+		             user_phone3, 
+		             user_addr1, 
+		             user_addr2, 
+		             user_company, 
+		             creator, 
+		             create_time, 
+		             modifier, 
+		             modified_time) 
+		VALUES      ( #{user_id}, 
+		              #{user_pw}, 
+		              #{user_name}, 
+		              #{user_phone1}, 
+		              #{user_phone2}, 
+		              #{user_phone3}, 
+		              #{user_addr1}, 
+		              #{user_addr2}, 
+		              #{user_company}, 
+		              #{user_id}, 
+		              sysdate, 
+		              #{user_id}, 
+		              sysdate) 
     </insert> 
 </mapper>

@@ -9,7 +9,15 @@ public class BoardVo {
 	private String 	creator;
 	private String	modifier;
 	private int totalCnt;
+	private String user_name;
 	
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
 	private CodeVo codeVo; 
 	
 	

@@ -44,6 +44,7 @@ const ajaxObj = {
 					let msg;
 					if(oper == "rm") msg = "삭제완료";
 					else if(oper == "update") msg = "수정완료";
+					else if(oper == "write") msg = "작성완료";
 					(data.success == 'Y') ? alert(msg) : alert("실패");
 					location.href = data.href;
 				},

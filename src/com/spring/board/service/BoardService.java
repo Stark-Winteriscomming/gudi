@@ -14,7 +14,7 @@ public interface BoardService {
 
 	public List<BoardVo> SelectBoardList(PageVo pageVo, String[] options, Criteria cri) throws Exception;
 
-	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
+	public BoardVo selectBoard(String boardType, int boardNum, String user_id) throws Exception;
 
 	public int selectBoardCnt() throws Exception;
 

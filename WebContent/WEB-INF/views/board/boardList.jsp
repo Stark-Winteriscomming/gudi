@@ -28,7 +28,7 @@
 							<td align="center">${list.codeVo.code_name}</td>
 							<td>${list.boardNum}</td>
 							<td>
-								<a href="/board/${list.boardType}/${list.boardNum}/boardView.do?pageNo=${pageNo}">${list.boardTitle}</a>
+								<a href="/board/${list.boardType}/${list.boardNum}/${list.creator}/boardView.do?pageNo=${pageNo}">${list.boardTitle}</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -56,7 +56,6 @@
 					<input type="submit" value="조회" style="display: none">
 				</form>
 				<button id="btn_search">조회</button>
-				<!-- 				<a id="a_search" href="">조회</a> -->
 			</td>
 		</tr>
 		<tr>

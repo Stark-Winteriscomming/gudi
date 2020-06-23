@@ -1,57 +1,35 @@
 function maxLengthCheck(object, length) {
 	if (object.value.length > length) {
+		alert(length + "초과 불가")
 		object.value = object.value.slice(0, length);
 	}
 }
 
 $j(document).ready(function() {
-	$j("#user_addr1").on("keyup paste input", function(e) {
-		if (e.type == 'paste') {
-			alert('붙여넣기 허용 안함');
-			return false;
+	$j("#user_addr1").on("input", function(e) {
+		const obj = $j("#user_addr1");
+		let len = obj.val().length;
+		const input = obj.val()[len - 1];
+		if (/[0-9]/.test(input) == false) {
+			obj.val(obj.val().substring(0, len - 1));
 		}
-		if (e.type == 'keyup') {
-			var code = e.keyCode || e.which;
-			const v = String.fromCharCode(code)
-
-			const content = $j("#user_addr1");
-			const len = $j("#user_addr1").val().length;
-			if (code != 8 && len == 8) {
-				content.val((content.val().substring(0, len - 1)));
-				alert('초과');
-				return false;
-			}
-			if (len == 3) {
-				content.val(content.val() + '-');
-			}
-			if (len == 4) {
-				let stmt = content.val();
-				let tmp = content.val()[3];
-				let c = stmt.slice(0, 3);
-				let s = c + "-" + tmp;
-				content.val(s);
-			}
-			if (code == 8 && len == 4) {
-				content.val((content.val().substring(0, len - 1)))
-			}
-			console.log("code: " + code);
-			if (code != undefined) {
-				if (/[0-9]/.test(v) == false && code != 8) {
-					alert('숫자만 입력');
-					if (len == 1) {
-						$j("#user_addr1").val('');
-					}
-					else {
-						content.val((content.val().substring(0, len - 1)))
-					}
-				}
-			}
+		len = obj.val().length;
+		if (len == 4) {
+			let stmt = obj.val();
+			let tmp = obj.val()[3];
+			let c = stmt.slice(0, 3);
+			let s = c + "-" + tmp;
+			obj.val(s);
+		}
+		if (len == 8) {
+			obj.val(obj.val().substring(0, len - 1));
+			alert('6자리 초과 할 수 없음');
 		}
 	})
 	$j("#user_id").on('input', function(e) {
 		v = $j("#user_id").val();
-		if (v.length > 7) {
-			alert('7자 초과 안됨');
+		if (v.length > 14) {
+			alert('14자 초과 안됨');
 			$j("#user_id").val(v.substring(0, v.length - 1))
 			return false;
 		}

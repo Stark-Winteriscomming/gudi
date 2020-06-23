@@ -7,6 +7,8 @@
     	<result property="boardNum" 	column="BOARD_NUM"/>
     	<result property="boardTitle" 	column="BOARD_TITLE"/>
     	<result property="boardComment" column="BOARD_COMMENT"/>
+    	<result property="creator" column="CREATOR"/>
+    	<result property="user_name" column="USER_NAME"/>
     	<collection property="codeVo" resultMap="codeVo" />
     </resultMap>
     
@@ -21,12 +23,14 @@
     </resultMap>
     
     <select id="selectBoardType" resultType="com.spring.board.vo.CodeVo" parameterType="java.lang.String">
-    	SELECT * FROM COM_CODE WHERE CODE_TYPE = #{codeType}
+    	SELECT * 
+    	FROM COM_CODE 
+    	WHERE CODE_TYPE = #{codeType}
     </select>
     <update id="boardModify" parameterType="com.spring.board.vo.BoardVo">
     	UPDATE BOARD 
-    	SET BOARD_TITLE=#{boardTitle}
-    		, BOARD_COMMENT=#{boardComment} 
+    	SET BOARD_TITLE=#{boardTitle},
+    		BOARD_COMMENT=#{boardComment} 
     	WHERE BOARD_TYPE = #{boardType} 
     	AND BOARD_NUM = #{boardNum}
     </update>
@@ -59,12 +63,12 @@
 				,BOARD_NUM
 				,BOARD_TITLE
 				,BOARD_COMMENT
+				,B.CREATOR
 		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 		      	,COUNT(*) OVER() AS TOTAL_CNT
 		      	,C.CODE_TYPE
 			  	,C.CODE_ID
 			  	,C.CODE_NAME
-				,C.CREATOR
 				,C.CREATE_TIME
 				,C.MODIFIER
 				,C.MODIFIED_TIME
@@ -89,28 +93,35 @@
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">
-		  SELECT
-		      	COUNT(*) AS TOTAL_CNT
-			FROM
-				BOARD	
+		SELECT COUNT(*) AS TOTAL_CNT
+		FROM BOARD	
     </select>
     	
     <select id="boardView" parameterType="com.spring.board.vo.BoardVo" resultMap="boardVo">
     	SELECT
-        	BOARD_TYPE
+        	 BOARD_TYPE
 			,BOARD_NUM
 			,BOARD_TITLE
 			,BOARD_COMMENT
+			,USER_NAME
 		FROM
-			BOARD
+    	(SELECT
+        	 B.BOARD_TYPE
+			,B.BOARD_NUM
+			,B.BOARD_TITLE
+			,B.BOARD_COMMENT
+			,U.USER_NAME
+		FROM BOARD B, USER_INFO U
+		WHERE B.CREATOR = #{creator} AND B.CREATOR = U.USER_ID
+		)
     	WHERE 	BOARD_TYPE = #{boardType}
     	AND 	BOARD_NUM  = #{boardNum}
     </select>	
     
     <select id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
-        INSERT INTO 
-        BOARD
-        (BOARD_TYPE
+        INSERT INTO BOARD
+        (
+        BOARD_TYPE
         ,BOARD_NUM
         ,BOARD_TITLE
         ,BOARD_COMMENT
@@ -128,9 +139,9 @@
 	    WHERE BOARD_TYPE = #{boardType}), 1)
         ,#{boardTitle}
         ,#{boardComment}
-        ,'SYSTEM'
+        ,#{creator}
         ,TO_CHAR(SYSDATE)
-        ,'SYSTEM'
+        ,#{creator}
         ,TO_CHAR(SYSDATE)
         )
     </select>
