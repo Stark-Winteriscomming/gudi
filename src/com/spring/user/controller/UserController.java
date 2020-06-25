@@ -95,7 +95,6 @@ public class UserController {
 		return "/user/login";  
 	}
 	
-	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	@ResponseBody
 	public String userLogin(HttpServletRequest req, UserVo userVo) throws Exception {
