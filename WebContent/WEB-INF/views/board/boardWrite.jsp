@@ -68,4 +68,7 @@
 					</table>
 					</form>
 </body>
+<script>
+	var dupe_content = document.getElementById("tbl_board_write").innerHTML;
+</script>
 </html>

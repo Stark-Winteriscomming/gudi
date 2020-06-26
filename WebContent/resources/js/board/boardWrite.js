@@ -1,14 +1,13 @@
 $j(document).ready(function() {
 	// 복사될 고정 요소
-	const dupe_content = $j("#tbl_board_write").html();
+//	const dupe_content = $j("#tbl_board_write").html();
 	const add_string = "<tr id='tr_btn_esc'><td colspan='2' align='right' style='border: 0'>"
 	+ "<button class='btn_rm'>X</button><td></tr>";
 	
-	$j(".tr_btn_esc")[0].remove();
+	$j(".tr_btn_esc").detach();
 	
 	const fn_plus = function() {
 		$j(".btn_plus").on("click", function(e) {
-			console.log(dupe_content);
 			$j("#tbl_board_write").append(dupe_content);
 			// 내용을 다시 만들고 click event를 만들어야 하므로 fun_plus() 다시호출
 			
@@ -32,9 +31,11 @@ $j(document).ready(function() {
 	}
 	const fn_rm = function() {
 		$j(".btn_rm").on("click", function(e) {
+			console.log(dupe_content)
 			$j(e.currentTarget).parent().parent().parent().remove();
-			
-			const len = $j(".tr_btn_plus").length; 
+			console.log('------------------------------------')
+			console.log(dupe_content)
+			const len = $j(".tr_btn_plus").length;
 			console.log(`len: ${len}`)
 			if($j(".tr_btn_plus").length == 1){
 				$j(".tr_btn_plus")[0].style.display = "";
