@@ -13,6 +13,11 @@
 		<table align="center">
 			<tr>
 				<td align="right">
+					<a href="/board/list">List</a>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">
 					<input id="submit" type="button" value="작성">
 				</td>
 			</tr>
@@ -20,7 +25,7 @@
 				<td>
 					<table id="tbl_board_write" border="1">
 						<tbody id="tb_board_write">
-							<tr>
+							<tr class="tr_btn_esc">
 								<td colspan="2" align="right" style="border: 0">
 									<button class="btn_rm">X</button>
 								<td>
@@ -40,13 +45,14 @@
 								</td>
 							</tr>
 							<tr>
-								<td height="300" align="center">Comment</td>
-								<td valign="top">
-									<textarea name="boardComment" rows="20" cols="55">${board.boardComment}</textarea>
+								<td width="120" align="center">Comment</td>
+								<td width="400" valign="top">
+<!-- 								rows="20" cols="55" -->
+									<textarea name="boardComment">${board.boardComment}</textarea>
 								</td>
 							</tr>
 							<div class="div_plus_btn">
-								<tr>
+								<tr class="tr_btn_plus">
 									<td colspan="2" align="center">
 										<button class="btn_plus">plus</button>
 									</td>
@@ -54,18 +60,12 @@
 							</div>
 						</tbody>
 					</table>
+					<table align="center">
 						<tr>
-							<td align="center">Writer</td>
+							<td>Writer</td>
 							<td>${userVo.user_name}</td>
 						</tr>
-				</td>
-			</tr>
-			<tr>
-				<td align="right">
-					<a href="/board/list">List</a>
-				</td>
-			</tr>
-		</table>
-	</form>
+					</table>
+					</form>
 </body>
 </html>
