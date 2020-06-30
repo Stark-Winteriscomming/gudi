@@ -11,9 +11,13 @@ const ajaxObj = {
 				console.log(`dom length: ${domTarget.length}`)
 				if (domTargetTagName == "select") {
 					for (let i = 0; i < domTarget.length; i++) {
+						let e = document.createElement("option");
+						e.setAttribute("value", "opt_default");
+						e.appendChild(document.createTextNode("선택"));
+						domTarget[i].appendChild(e);
 						for (let j = 0; j < data.length; j++) {
 							let element = document.createElement("option");
-							element.setAttribute("value", data[i].code_id);
+							element.setAttribute("value", data[j].code_id);
 							element.appendChild(document.createTextNode(data[j].code_name));
 							domTarget[i].appendChild(element);
 						}

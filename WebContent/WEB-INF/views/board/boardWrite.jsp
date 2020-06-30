@@ -39,7 +39,7 @@
 								<td width="120" align="center">Type</td>
 								<td width="400">
 									<select class="sel-board-type" name="boardType">
-										<option id="opt_default" value="선택" selected="selected">선택</option>
+<!-- 										<option id="opt_default" value="opt_default" selected="selected">선택</option> -->
 									</select>
 								</td>
 							</tr>
@@ -66,8 +66,8 @@
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
-									<select name="boardType" class="sel-board-type"">
-										<option id="opt_default" value="선택" selected="selected">선택</option>
+									<select name="boardType" class="sel-board-type">
+<!-- 										<option id="opt_default" value="opt_default" selected="selected">선택</option> -->
 									</select>
 								</td>
 							</tr>
@@ -95,7 +95,7 @@
 								<td width="120" align="center">Type</td>
 								<td width="400">
 									<select name="boardType" class="sel-board-type">
-										<option id="opt_default" value="선택" selected="selected">선택</option>
+<!-- 										<option id="opt_default" value="opt_default" selected="selected">선택</option> -->
 									</select>
 								</td>
 							</tr>
