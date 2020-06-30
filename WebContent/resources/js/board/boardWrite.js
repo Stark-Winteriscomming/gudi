@@ -1,24 +1,36 @@
 $j(document).ready(function() {
-//	$j("tbody")[2].style.display = "none";
-//	$j("tbody")[3].style.display = "none";
-	
+	$j("tbody")[2].style.display = "none";
+	$j("tbody")[3].style.display = "none";
+
 	$j(".btn_plus").on("click", function(e) {
+		//보여지는 갯수
 		const len = $j("#tbl_board_write").data('len');
-		if(len == 3){
-			alert('max');return;
-		}else {
+		if (len == 3) {
+			alert('max'); return;
+		} else {
+			console.log('c')
 			$j("tbody")[len + 1].style.display = "";
 			$j("#tbl_board_write").data('len', len + 1);
 		}
-		
+
 	})
 	$j(".btn_rm").on("click", function(e) {
 		const len = $j("#tbl_board_write").data('len');
-		if(len == 1){
-			alert('no rm');return;
-		}else {
-			$j("tbody")[len].style.display = "none";
-			$j("#tbl_board_write").data('len', len - 1);
+		if (len == 1) {
+			alert('no rm'); return;
+		} else {
+			const visiable_tb_len = $j(".tb-board:visible").length; 
+			
+			const t_cboxs = $j(".cbox-board");
+			const cboxs = $j(".cbox-board:checked");
+			console.log(`cboxs len: ${cboxs.length}`)
+			for (let i = 0; i < cboxs.length; i++) {
+				const index = parseInt(cboxs[i].dataset.index) + 1;
+				if(visiable_tb_len == 3 && cboxs[i].dataset.index == '')
+				t_cboxs[index-1].checked = false;
+				$j(".tb-board")[index].style.display = "none";
+			}
+			$j("#tbl_board_write").data('len', len - cboxs.length);
 		}
 	})
 

@@ -21,7 +21,7 @@
 					<button class="btn_plus">plus</button>
 				</td>
 			</tr>
-			<tr>	
+			<tr>
 				<td>
 					<button class="btn_rm">rm</button>
 				</td>
@@ -33,8 +33,8 @@
 			</tr>
 			<tr>
 				<td>
-					<table id="tbl_board_write" border="1"  data-len="1">
-						<tbody>
+					<table id="tbl_board_write" border="1" data-len="1">
+						<tbody class="tb-board">
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
@@ -57,7 +57,12 @@
 								</td>
 							</tr>
 						</tbody>
-						<tbody>
+						<tbody class="tb-board">
+							<tr>
+								<td>
+									<input type="checkbox" class="cbox-board" data-index="1">
+								</td>
+							</tr>
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
@@ -80,7 +85,12 @@
 								</td>
 							</tr>
 						</tbody>
-						<tbody>
+						<tbody class="tb-board">
+							<tr>
+								<td>
+									<input type="checkbox" class="cbox-board" data-index="2">
+								</td>
+							</tr>
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
@@ -110,6 +120,6 @@
 							<td>${userVo.user_name}</td>
 						</tr>
 					</table>
-					</form>
+	</form>
 </body>
 </html>

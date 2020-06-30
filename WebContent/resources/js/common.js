@@ -8,21 +8,14 @@ const ajaxObj = {
 				//					console.log(domTarget)
 				//					domTarget.html("");
 				//					domTarget.append("<option value='default' selected>선택</option>");
+				console.log(`dom length: ${domTarget.length}`)
 				if (domTargetTagName == "select") {
 					for (let i = 0; i < domTarget.length; i++) {
-						for(let j=0; j < data.length; j++){
-							if(j == 0 ){
-								let element = document.createElement("option");
-								element.setAttribute("value", "default");
-								element.setAttribute('selected', 'selected');
-								element.appendChild(document.createTextNode("선택"));
-								domTarget[0].appendChild(element);
-							}else{
-								domTarget[i].innerHTML = "";
-								element.setAttribute("value", data[i].code_id);
-								element.appendChild(document.createTextNode(data[i].code_name));
-								domTarget[i].appendChild(element);
-							}
+						for (let j = 0; j < data.length; j++) {
+							let element = document.createElement("option");
+							element.setAttribute("value", data[i].code_id);
+							element.appendChild(document.createTextNode(data[j].code_name));
+							domTarget[i].appendChild(element);
 						}
 					}
 				}
