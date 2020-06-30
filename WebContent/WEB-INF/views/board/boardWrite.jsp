@@ -17,23 +17,28 @@
 				</td>
 			</tr>
 			<tr>
+				<td>
+					<button class="btn_plus">plus</button>
+				</td>
+			</tr>
+			<tr>	
+				<td>
+					<button class="btn_rm">rm</button>
+				</td>
+			</tr>
+			<tr>
 				<td align="right">
 					<input id="submit" type="button" value="작성">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<table id="tbl_board_write" border="1">
-						<tbody id="tb_board_write">
-							<tr class="tr_btn_esc">
-								<td colspan="2" align="right" style="border: 0">
-									<button class="btn_rm">X</button>
-								<td>
-							</tr>
+					<table id="tbl_board_write" border="1"  data-len="1">
+						<tbody>
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
-									<select name="boardType" id="sel_board_type">
+									<select class="sel-board-type" name="boardType">
 										<option id="opt_default" value="선택" selected="selected">선택</option>
 									</select>
 								</td>
@@ -47,17 +52,56 @@
 							<tr>
 								<td width="120" align="center">Comment</td>
 								<td width="400" valign="top">
-<!-- 								rows="20" cols="55" -->
+									<!-- 								rows="20" cols="55" -->
 									<textarea name="boardComment">${board.boardComment}</textarea>
 								</td>
 							</tr>
-							<div class="div_plus_btn">
-								<tr class="tr_btn_plus">
-									<td colspan="2" align="center">
-										<button class="btn_plus">plus</button>
-									</td>
-								</tr>
-							</div>
+						</tbody>
+						<tbody>
+							<tr>
+								<td width="120" align="center">Type</td>
+								<td width="400">
+									<select name="boardType" class="sel-board-type"">
+										<option id="opt_default" value="선택" selected="selected">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td width="120" align="center">Title</td>
+								<td width="400">
+									<input name="boardTitle" type="text" size="50" value="${board.boardTitle}">
+								</td>
+							</tr>
+							<tr>
+								<td width="120" align="center">Comment</td>
+								<td width="400" valign="top">
+									<!-- 								rows="20" cols="55" -->
+									<textarea name="boardComment">${board.boardComment}</textarea>
+								</td>
+							</tr>
+						</tbody>
+						<tbody>
+							<tr>
+								<td width="120" align="center">Type</td>
+								<td width="400">
+									<select name="boardType" class="sel-board-type">
+										<option id="opt_default" value="선택" selected="selected">선택</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td width="120" align="center">Title</td>
+								<td width="400">
+									<input name="boardTitle" type="text" size="50" value="${board.boardTitle}">
+								</td>
+							</tr>
+							<tr>
+								<td width="120" align="center">Comment</td>
+								<td width="400" valign="top">
+									<!-- 								rows="20" cols="55" -->
+									<textarea name="boardComment">${board.boardComment}</textarea>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 					<table align="center">
