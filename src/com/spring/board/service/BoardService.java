@@ -2,6 +2,8 @@ package com.spring.board.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
 import com.spring.board.vo.Criteria;
@@ -17,8 +19,9 @@ public interface BoardService {
 	public BoardVo selectBoard(String boardType, int boardNum, String user_id) throws Exception;
 
 	public int selectBoardCnt() throws Exception;
-
-	public int boardInsert(BoardVo boardVo) throws Exception;
+	
+	@Transactional
+	public int boardInsert(List<BoardVo> bList) throws Exception;
 
 	public int boardDelete(BoardVo boardVo);
 

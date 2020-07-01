@@ -17,7 +17,7 @@ $j(document).ready(function() {
 	$j("#btn_search").on("click", function() {
 	        form_value = $j("#frm_search").serialize();
 	        console.log(form_value);
-	        var queryUrl = "/board/boardList.do?" + form_value;
+	        var queryUrl = "/board/list?" + form_value;
 	        $j("#frm_search").attr("action", queryUrl);
 	        $j("#frm_search").submit();
 	    }

@@ -45,6 +45,9 @@ const ajaxObj = {
 	},
 
 	updateData: function(url, param, type, oper) {
+		console.log("param")
+		console.log(param)
+		
 		$j.ajax({
 			url: url,
 			dataType: "json",

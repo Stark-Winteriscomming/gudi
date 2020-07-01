@@ -5,6 +5,7 @@
 	
 	<typeAliases>
 		<typeAlias type="com.spring.user.vo.UserVo" alias="userVo"/>
+		<typeAlias type="com.spring.board.vo.BoardVo" alias="boardVo"/>
 		<typeAlias type="java.lang.String" alias="str"/>
 		<typeAlias type="java.lang.Integer" alias="i"/>
 	</typeAliases>
