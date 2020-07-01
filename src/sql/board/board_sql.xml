@@ -90,6 +90,7 @@
 			</if>
 			)
 			WHERE NUMROW BETWEEN (#{cri.pageNum}-1)*#{cri.amount} + 1 AND (#{cri.pageNum})*#{cri.amount}
+			AND CREATE_TIME DESC
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">
@@ -118,9 +119,9 @@
     	AND 	BOARD_NUM  = #{boardNum}
     </select>	
     
-    <select id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
-        INSERT INTO BOARD
-        (
+    <insert id="boardInsert" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+        INTO BOARD (
         BOARD_TYPE
         ,BOARD_NUM
         ,BOARD_TITLE
@@ -129,20 +130,18 @@
         ,CREATE_TIME
         ,MODIFIER
         ,MODIFIED_TIME
-        )
-        VALUES
-        (#{boardType}
-        ,NVL2((SELECT TO_NUMBER(MAX(BOARD_NUM)+1)
-	    FROM BOARD
-	    WHERE BOARD_TYPE = #{boardType}), (SELECT TO_NUMBER(MAX(BOARD_NUM)+1)
-	    FROM BOARD
-	    WHERE BOARD_TYPE = #{boardType}), 1)
-        ,#{boardTitle}
-        ,#{boardComment}
-        ,#{creator}
+        ) 
+        VALUES (#{item.boardType}
+        ,NVL(
+        (SELECT TO_NUMBER(MAX(BOARD_NUM)+1) FROM BOARD WHERE BOARD_TYPE = #{item.boardType}), 
+        ,1)
+        ,#{item.boardTitle}
+        ,#{item.boardComment}
+        ,#{item.creator}
         ,TO_CHAR(SYSDATE)
-        ,#{creator}
+        ,#{item.creator}
         ,TO_CHAR(SYSDATE)
         )
-    </select>
+        </foreach> 
+   </insert>
 </mapper>

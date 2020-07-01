@@ -1,6 +1,7 @@
 package com.spring.board.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -139,8 +140,25 @@ public class BoardController {
 		HttpSession httpSession = req.getSession(); 
 		Object obj = httpSession.getAttribute("userVo");
 		UserVo uvo = (UserVo)obj;
-		boardVo.setCreator(uvo.getUser_id());
-		result.put("success", (boardService.boardInsert(boardVo) > 0) ? "Y" : "N");
+		//
+		List<String> types = Arrays.asList(boardVo.getBoardType().split("\\s*,\\s*"));
+		List<String> titles = Arrays.asList(boardVo.getBoardTitle().split("\\s*,\\s*"));
+		List<String> comments = Arrays.asList(boardVo.getBoardComment().split("\\s*,\\s*"));
+		
+		List<BoardVo> bList = new ArrayList<BoardVo>();
+		int size = types.size();
+		System.out.println("size "+size);
+		for(int i=0; i< types.size(); i++) {
+			BoardVo bvo = new BoardVo(); 
+			bvo.setBoardType(types.get(i));
+			bvo.setBoardTitle(titles.get(i));
+			bvo.setBoardComment(comments.get(i));
+			bvo.setCreator(uvo.getUser_id());
+			bList.add(bvo);
+		}
+		int r = boardService.boardInsert(bList);
+		//
+		result.put("success", (r > 0) ? "Y" : "N");
 		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 

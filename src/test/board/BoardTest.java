@@ -30,7 +30,7 @@ public class BoardTest {
 				vo.setBoardTitle("tttt");
 				String boardType = "a0" + d;
 				vo.setBoardType(boardType);
-				bsv.boardInsert(vo); 
+//				bsv.boardInsert(vo); 
 				
 			}
 		}
