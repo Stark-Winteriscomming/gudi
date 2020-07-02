@@ -45,14 +45,14 @@ const ajaxObj = {
 	},
 
 	updateData: function(url, param, type, oper) {
-		console.log("param")
-		console.log(param)
-		
+		const obj = {"list" : [{"boardType":"test", "boardTitle":"test", "boardComment":"test"},{"boardType":"test", "boardTitle":"test", "boardComment":"test"}]};
+		console.log(JSON.stringify(obj))
 		$j.ajax({
 			url: url,
 			dataType: "json",
 			type: type,
-			data: param,
+//			data: param,
+			data: JSON.stringify(obj),
 			success: function(data, textStatus, jqXHR) {
 				let msg;
 				if (oper == "rm") msg = "삭제완료";

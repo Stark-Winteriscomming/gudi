@@ -18,7 +18,7 @@ public interface BoardDao {
 
 	public int selectBoardCnt() throws Exception;
 
-	public int boardInsert(List<BoardVo> bList) throws Exception;
+	public void boardInsert(BoardVo bvo) throws Exception;
 
 	public int boardDelete(BoardVo boardVo);
 

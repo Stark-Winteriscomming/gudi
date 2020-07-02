@@ -21,7 +21,7 @@ public interface BoardService {
 	public int selectBoardCnt() throws Exception;
 	
 	@Transactional
-	public int boardInsert(List<BoardVo> bList) throws Exception;
+	public void boardInsert(List<BoardVo> bList) throws Exception;
 
 	public int boardDelete(BoardVo boardVo);
 

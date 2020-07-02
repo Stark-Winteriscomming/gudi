@@ -29,8 +29,8 @@
     </select>
     <update id="boardModify" parameterType="com.spring.board.vo.BoardVo">
     	UPDATE BOARD 
-    	SET BOARD_TITLE=#{boardTitle},
-    		BOARD_COMMENT=#{boardComment} 
+    	SET BOARD_TITLE=#{boardTitle}
+    		,BOARD_COMMENT=#{boardComment} 
     	WHERE BOARD_TYPE = #{boardType} 
     	AND BOARD_NUM = #{boardNum}
     </update>
@@ -90,7 +90,6 @@
 			</if>
 			)
 			WHERE NUMROW BETWEEN (#{cri.pageNum}-1)*#{cri.amount} + 1 AND (#{cri.pageNum})*#{cri.amount}
-			AND CREATE_TIME DESC
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">
@@ -113,16 +112,14 @@
 			,B.BOARD_COMMENT
 			,U.USER_NAME
 		FROM BOARD B, USER_INFO U
-		WHERE B.CREATOR = #{creator} AND B.CREATOR = U.USER_ID
+		WHERE B.CREATOR = U.USER_ID AND  B.CREATOR = #{creator}  
 		)
     	WHERE 	BOARD_TYPE = #{boardType}
     	AND 	BOARD_NUM  = #{boardNum}
     </select>	
     
-    <insert id="boardInsert" parameterType="java.util.List">
-    
-        <foreach collection="list" item="item" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
-        INTO BOARD (
+    <insert id="boardInsert" parameterType="boardVo">
+        INSERT INTO BOARD (
         BOARD_TYPE
         ,BOARD_NUM
         ,BOARD_TITLE
@@ -133,15 +130,14 @@
         ,MODIFIED_TIME
         )
         VALUES (
-        #{item.boardType}
-        ,NVL((SELECT TO_NUMBER(MAX(BOARD_NUM)+1) FROM BOARD WHERE BOARD_TYPE = #{item.boardType}),1)
-        ,#{item.boardTitle}
-        ,#{item.boardComment}
-        ,#{item.creator}
-        ,TO_CHAR(SYSDATE)
-        ,#{item.creator}
-        ,TO_CHAR(SYSDATE)
+        #{boardType}
+        ,NVL((SELECT TO_NUMBER(MAX(BOARD_NUM)+1) FROM BOARD WHERE BOARD_TYPE = #{boardType}),1)
+        ,#{boardTitle}
+        ,#{boardComment}
+        ,#{creator}
+        ,TO_CHAR(SYSDATE,'MM-DD HH24:MI:SS')
+        ,#{creator}
+        ,TO_CHAR(SYSDATE,'MM-DD HH24:MI:SS')
         )
-        </foreach> 
    </insert>
 </mapper>

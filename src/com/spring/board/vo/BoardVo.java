@@ -1,5 +1,7 @@
 package com.spring.board.vo;
 
+import java.util.List;
+
 public class BoardVo {
 	
 	private String 	boardType;
@@ -10,7 +12,17 @@ public class BoardVo {
 	private String	modifier;
 	private int totalCnt;
 	private String user_name;
+	private CodeVo codeVo; 
+	private List<BoardVo> list;
 	
+	public List<BoardVo> getList() {
+		return list;
+	}
+
+	public void setList(List<BoardVo> list) {
+		this.list = list;
+	}
+
 	public String getUser_name() {
 		return user_name;
 	}
@@ -18,7 +30,7 @@ public class BoardVo {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-	private CodeVo codeVo; 
+	
 	
 	
 	@Override

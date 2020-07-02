@@ -5,10 +5,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.board.service.BoardService;
@@ -133,11 +137,14 @@ public class BoardController {
 
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ResponseBody
-	public String boardWriteAction(HttpServletRequest req, Locale locale, BoardVo boardVo) throws Exception {
-
+	public String boardWriteAction(HttpServletRequest req, Locale locale, BoardVo boardVo, @RequestParam Map<String, Object> parameters) throws Exception {
+		System.out.println("hi");
+		String json = parameters.get("list").toString();
+		ObjectMapper mapper = new ObjectMapper();
+		List<BoardVo> list = mapper.readValue(json, new TypeReference<ArrayList<BoardVo>>(){});
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
-		HttpSession httpSession = req.getSession(); 
+		HttpSession httpSession = req.getSession();
 		Object obj = httpSession.getAttribute("userVo");
 		UserVo uvo = (UserVo)obj;
 		//
@@ -149,16 +156,16 @@ public class BoardController {
 		int size = types.size();
 		System.out.println("size "+size);
 		for(int i=0; i< types.size(); i++) {
-			BoardVo bvo = new BoardVo(); 
+			BoardVo bvo = new BoardVo();
 			bvo.setBoardType(types.get(i));
 			bvo.setBoardTitle(titles.get(i));
 			bvo.setBoardComment(comments.get(i));
 			bvo.setCreator(uvo.getUser_id());
 			bList.add(bvo);
 		}
-		int r = boardService.boardInsert(bList);
+		boardService.boardInsert(bList);
 		//
-		result.put("success", (r > 0) ? "Y" : "N");
+		result.put("success","Y");
 		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
 
