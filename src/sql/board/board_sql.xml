@@ -90,6 +90,7 @@
 			</if>
 			)
 			WHERE NUMROW BETWEEN (#{cri.pageNum}-1)*#{cri.amount} + 1 AND (#{cri.pageNum})*#{cri.amount}
+			AND CREATE_TIME DESC
     </select>
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">

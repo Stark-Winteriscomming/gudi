@@ -164,7 +164,6 @@ public class BoardController {
 			bList.add(bvo);
 		}
 		boardService.boardInsert(bList);
-		//
 		result.put("success","Y");
 		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);
