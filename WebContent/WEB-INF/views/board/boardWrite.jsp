@@ -38,7 +38,7 @@
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
-									<select class="sel-board-type" name="boardType">
+									<select class="sel-board-type" name="list[0].boardType">
 <!-- 										<option id="opt_default" value="opt_default" selected="selected">선택</option> -->
 									</select>
 								</td>
@@ -46,14 +46,14 @@
 							<tr>
 								<td width="120" align="center">Title</td>
 								<td width="400">
-									<input name="boardTitle" type="text" size="50" value="${board.boardTitle}">
+									<input name="list[0].boardTitle" type="text" size="50" value="${board.boardTitle}">
 								</td>
 							</tr>
 							<tr>
 								<td width="120" align="center">Comment</td>
 								<td width="400" valign="top">
 									<!-- 								rows="20" cols="55" -->
-									<textarea name="boardComment">${board.boardComment}</textarea>
+									<textarea name="list[0].boardComment">${board.boardComment}</textarea>
 								</td>
 							</tr>
 						</tbody>
@@ -66,7 +66,7 @@
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
-									<select name="boardType" class="sel-board-type">
+									<select name="list[1].boardType" class="sel-board-type">
 <!-- 										<option id="opt_default" value="opt_default" selected="selected">선택</option> -->
 									</select>
 								</td>
@@ -74,14 +74,14 @@
 							<tr>
 								<td width="120" align="center">Title</td>
 								<td width="400">
-									<input name="boardTitle" type="text" size="50" value="${board.boardTitle}">
+									<input name="list[1].boardTitle" type="text" size="50" value="${board.boardTitle}">
 								</td>
 							</tr>
 							<tr>
 								<td width="120" align="center">Comment</td>
 								<td width="400" valign="top">
 									<!-- 								rows="20" cols="55" -->
-									<textarea name="boardComment">${board.boardComment}</textarea>
+									<textarea name="list[1].boardComment">${board.boardComment}</textarea>
 								</td>
 							</tr>
 						</tbody>
@@ -94,7 +94,7 @@
 							<tr>
 								<td width="120" align="center">Type</td>
 								<td width="400">
-									<select name="boardType" class="sel-board-type">
+									<select name="list[2].boardType" class="sel-board-type">
 <!-- 										<option id="opt_default" value="opt_default" selected="selected">선택</option> -->
 									</select>
 								</td>
@@ -102,14 +102,14 @@
 							<tr>
 								<td width="120" align="center">Title</td>
 								<td width="400">
-									<input name="boardTitle" type="text" size="50" value="${board.boardTitle}">
+									<input name="list[2].boardTitle" type="text" size="50" value="${board.boardTitle}">
 								</td>
 							</tr>
 							<tr>
 								<td width="120" align="center">Comment</td>
 								<td width="400" valign="top">
 									<!-- 								rows="20" cols="55" -->
-									<textarea name="boardComment">${board.boardComment}</textarea>
+									<textarea name="list[2].boardComment">${board.boardComment}</textarea>
 								</td>
 							</tr>
 						</tbody>

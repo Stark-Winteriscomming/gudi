@@ -138,32 +138,30 @@ public class BoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	@ResponseBody
 	public String boardWriteAction(HttpServletRequest req, Locale locale, BoardVo boardVo, @RequestParam Map<String, Object> parameters) throws Exception {
-		System.out.println("hi");
-		String json = parameters.get("list").toString();
-		ObjectMapper mapper = new ObjectMapper();
-		List<BoardVo> list = mapper.readValue(json, new TypeReference<ArrayList<BoardVo>>(){});
 		HashMap<String, String> result = new HashMap<String, String>();
 		CommonUtil commonUtil = new CommonUtil();
 		HttpSession httpSession = req.getSession();
 		Object obj = httpSession.getAttribute("userVo");
 		UserVo uvo = (UserVo)obj;
-		//
-		List<String> types = Arrays.asList(boardVo.getBoardType().split("\\s*,\\s*"));
-		List<String> titles = Arrays.asList(boardVo.getBoardTitle().split("\\s*,\\s*"));
-		List<String> comments = Arrays.asList(boardVo.getBoardComment().split("\\s*,\\s*"));
-		
-		List<BoardVo> bList = new ArrayList<BoardVo>();
-		int size = types.size();
-		System.out.println("size "+size);
-		for(int i=0; i< types.size(); i++) {
-			BoardVo bvo = new BoardVo();
-			bvo.setBoardType(types.get(i));
-			bvo.setBoardTitle(titles.get(i));
-			bvo.setBoardComment(comments.get(i));
+		for(BoardVo bvo : boardVo.getList()) {
 			bvo.setCreator(uvo.getUser_id());
-			bList.add(bvo);
 		}
-		boardService.boardInsert(bList);
+		//
+//		List<String> types = Arrays.asList(boardVo.getBoardType().split("\\s*,\\s*"));
+//		List<String> titles = Arrays.asList(boardVo.getBoardTitle().split("\\s*,\\s*"));
+//		List<String> comments = Arrays.asList(boardVo.getBoardComment().split("\\s*,\\s*"));
+//		List<BoardVo> bList = new ArrayList<BoardVo>();
+//		int size = types.size();
+//		System.out.println("size "+size);
+//		for(int i=0; i< types.size(); i++) {
+//			BoardVo bvo = new BoardVo();
+//			bvo.setBoardType(types.get(i));
+//			bvo.setBoardTitle(titles.get(i));
+//			bvo.setBoardComment(comments.get(i));
+//			bvo.setCreator(uvo.getUser_id());
+//			bList.add(bvo);
+//		}
+		boardService.boardInsert(boardVo.getList());
 		result.put("success","Y");
 		result.put("href", "/board/list");
 		String callbackMsg = commonUtil.getJsonCallBackString(" ", result);

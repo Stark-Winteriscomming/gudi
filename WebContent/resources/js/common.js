@@ -51,8 +51,7 @@ const ajaxObj = {
 			url: url,
 			dataType: "json",
 			type: type,
-//			data: param,
-			data: JSON.stringify(obj),
+			data: param,
 			success: function(data, textStatus, jqXHR) {
 				let msg;
 				if (oper == "rm") msg = "삭제완료";
