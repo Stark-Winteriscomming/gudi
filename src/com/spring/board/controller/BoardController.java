@@ -147,20 +147,6 @@ public class BoardController {
 			bvo.setCreator(uvo.getUser_id());
 		}
 		//
-//		List<String> types = Arrays.asList(boardVo.getBoardType().split("\\s*,\\s*"));
-//		List<String> titles = Arrays.asList(boardVo.getBoardTitle().split("\\s*,\\s*"));
-//		List<String> comments = Arrays.asList(boardVo.getBoardComment().split("\\s*,\\s*"));
-//		List<BoardVo> bList = new ArrayList<BoardVo>();
-//		int size = types.size();
-//		System.out.println("size "+size);
-//		for(int i=0; i< types.size(); i++) {
-//			BoardVo bvo = new BoardVo();
-//			bvo.setBoardType(types.get(i));
-//			bvo.setBoardTitle(titles.get(i));
-//			bvo.setBoardComment(comments.get(i));
-//			bvo.setCreator(uvo.getUser_id());
-//			bList.add(bvo);
-//		}
 		boardService.boardInsert(boardVo.getList());
 		result.put("success","Y");
 		result.put("href", "/board/list");

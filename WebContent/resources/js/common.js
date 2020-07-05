@@ -5,9 +5,6 @@ const ajaxObj = {
 			dataType: "json",
 			type: "GET",
 			success: function(data, textStatus, jqXHR) {
-				//					console.log(domTarget)
-				//					domTarget.html("");
-				//					domTarget.append("<option value='default' selected>선택</option>");
 				console.log(`dom length: ${domTarget.length}`)
 				if (domTargetTagName == "select") {
 					for (let i = 0; i < domTarget.length; i++) {
