@@ -24,7 +24,7 @@
 		SELECT Count(user_id) 
 		FROM   user_info 
 		WHERE  user_id = #{user_id} 
-		       AND user_pw = #{user_pw}   
+		AND user_pw = #{user_pw}   
     </select>
     
     <insert id="registerUser" parameterType="userVo">

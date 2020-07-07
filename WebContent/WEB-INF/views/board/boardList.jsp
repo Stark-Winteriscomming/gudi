@@ -6,9 +6,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>list</title>
 </head>
+<link rel="stylesheet" href="/resources/css/jquery-ui.css"/> 
+<script src="/resources/js/jquery-filedownload.js"></script> 
+<script src="/resources/js/jquery-ui.js"></script> 
 <script src="/resources/js/common.js"></script>
 <script src="/resources/js/board/boardList.js"></script>
+
 <body>
+	<button id="btn-excel">엑셀 다운로드</button> 
+	<!-- 파일 생성중 보여질 진행막대를 포함하고 있는 다이얼로그 입니다. --> 
+	<div title="Data Download" id="preparing-file-modal" style="display: none;"> 
+	<div id="progressbar" style="width: 100%; height: 22px; margin-top: 20px;"></div> 
+	</div> <!-- 에러발생시 보여질 메세지 다이얼로그 입니다. --> <div title="Error" id="error-modal" style="display: none;"> <p>생성실패.</p> </div>
 	<table align="center">
 		<tr><td>${userVo.user_name}</td></tr>
 		<c:if test="${userVo == null}"><tr><td align="right"><a href="/user/join">회원가입</a></td></tr></c:if>
