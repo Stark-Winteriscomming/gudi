@@ -2,24 +2,32 @@ const static_element = "<tbody class='tb-board'><tr><td><input type='checkbox' c
 	
 
 $j(document).ready(function() {
-	function initAddedElement(element){
+	
+	function appendElement(){
 		$j("#tbl_board_write").append(static_element);
+	}
+	function initAddedElement(oper){
+		if(oper == 'plus'){
+			appendElement();
+		} 
 		const tb = document.getElementsByClassName("tb-board");
 		const len = tb.length;
-		console.log($j(tb[len-1]).find(".sel-board-type"));
-		console.log(`tb-board len: ${len}`);
-		const name_value = 'list[' + parseInt(len-1) + '].boardType';
-		$j(tb[len-1]).find(".sel-board-type").attr('name', 'list[' + parseInt(len-1) + '].boardType');
-		$j(tb[len-1]).find(".i-board-title").attr('name', 'list['+ parseInt(len-1) + '].boardTitle');
-		$j(tb[len-1]).find(".t-board-comment").attr('name', 'list['+ parseInt(len-1) + '].boardComment');
-		ajaxObj.getOptions("/board/selectBoardType", null, $j(tb[len-1]).find(".sel-board-type"), "menu", "select");
+		for(let i=0; i<len; i++){
+			$j(tb[i]).find(".sel-board-type").attr('name', 'list[' + parseInt(i) + '].boardType');
+			$j(tb[i]).find(".i-board-title").attr('name', 'list['+ parseInt(i) + '].boardTitle');
+			$j(tb[i]).find(".t-board-comment").attr('name', 'list['+ parseInt(i) + '].boardComment');	
+		}
+		if(oper == 'plus'){
+			ajaxObj.getOptions("/board/selectBoardType", null, $j(tb[len-1]).find(".sel-board-type"), "menu", "select");
+		}
 	}
 	
 	$j(".btn_plus").on("click", function(e) {
-		initAddedElement(static_element);
+		initAddedElement('plus');
 	})
 	$j(".btn_rm").on("click", function(e) {
 		$j(".cbox-board:checked").parent().parent().parent().remove();
+		initAddedElement(null);
 	})
 
 	//print the options into #sel_board_type
