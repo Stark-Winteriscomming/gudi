@@ -32,8 +32,8 @@
         </property>
     </bean>
 	
-<!-- 	 <bean id="sqlSessionFactory" class="setting.mybatis.RefreshableSqlSessionFactoryBean"> -->
-	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+<!-- 	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
+	 <bean id="sqlSessionFactory" class="setting.mybatis.RefreshableSqlSessionFactoryBean">
 	        <property name="dataSource" ref="dataSource" />
 	        <property name="configLocation" value="classpath:/WEB-INF/mybatis/mybatis-conf.xml"></property>
 	        <property name="mapperLocations" value="classpath:sql/**/*_sql.xml" />

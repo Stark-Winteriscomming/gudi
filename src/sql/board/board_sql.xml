@@ -41,7 +41,7 @@
     	where BOARD_TYPE = #{boardType} 
     	AND BOARD_NUM = #{boardNum}
     </delete>
-    <select id="selectExcelList">
+    <select id="excel" resultMap="boardVo">
     	SELECT * FROM BOARD
     </select>
     <select id="boardList" parameterType="java.util.HashMap" resultMap="boardVo">

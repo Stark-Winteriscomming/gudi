@@ -2,6 +2,8 @@ package com.spring.board.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.board.vo.BoardVo;
@@ -28,5 +30,7 @@ public interface BoardService {
 	public int boardModify(BoardVo boardVo);
 
 	public List<CodeVo> selectBoardType(String codeType);
-
+	
+	
+	public void selectExcelList(HttpServletResponse response) throws Exception;
 }

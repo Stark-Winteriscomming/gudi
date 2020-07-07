@@ -16,7 +16,10 @@ $j(document).ready(function() {
 		$j("#progressbar").progressbar({ value: false });
 		$j.fileDownload("/board/excelDownload", {
 			successCallback: function(url) { $preparingFileModal.dialog('close'); },
-			failCallback: function(responseHtml, url) { $preparingFileModal.dialog('close'); $j("#error-modal").dialog({ modal: true }); }
+			failCallback: function(responseHtml, url) { 
+				$preparingFileModal.dialog('close');
+				$j("#error-modal").dialog({ modal: true }); 
+			}
 		});
 		// 버튼의 원래 클릭 이벤트를 중지 시키기 위해 필요합니다.
 		return false;

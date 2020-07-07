@@ -49,68 +49,9 @@ public class BoardController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
-	@Autowired
-	SqlSession sqlSession;
-
 	@RequestMapping(value = "/excelDownload")
-	public void selectExcelList(HttpServletResponse response) {
-
-		// 메모리에 100개의 행을 유지합니다. 행의 수가 넘으면 디스크에 적습니다.
-		SXSSFWorkbook wb = new SXSSFWorkbook(100);
-		Sheet sheet = wb.createSheet();
-
-		try {
-			sqlSession.select("selectExcelList", "게시물", new ResultHandler<BoardVo>() {
-
-				@Override
-				public void handleResult(ResultContext<? extends BoardVo> context) {
-					// TODO Auto-generated method stub
-					BoardVo vo = context.getResultObject(); 
-					Row row = sheet.createRow(context.getResultCount() - 1); 
-					Cell cell = null; 
-					cell = row.createCell(0); 
-					cell.setCellValue(vo.getBoardTitle().toString()); cell = row.createCell(1); 
-					cell.setCellValue(vo.getBoardComment()); 
-					cell = row.createCell(2); 
-				}
-				
-			});
-
-			response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-			response.setHeader("Content-Disposition", String.format("attachment; filename=\"test.xlsx\""));
-			wb.write(response.getOutputStream());
-
-		} catch (Exception e) {
-
-			response.setHeader("Set-Cookie", "fileDownload=false; path=/");
-			response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-			response.setHeader("Content-Type", "text/html; charset=utf-8");
-
-			OutputStream out = null;
-			try {
-				out = response.getOutputStream();
-				byte[] data = new String("fail..").getBytes();
-				out.write(data, 0, data.length);
-			} catch (Exception ignore) {
-				ignore.printStackTrace();
-			} finally {
-				if (out != null)
-					try {
-						out.close();
-					} catch (Exception ignore) {
-					}
-			}
-
-		} finally {
-//			sqlSession.close();
-
-			// 디스크 적었던 임시파일을 제거합니다.
-			wb.dispose();
-			try {
-				wb.close();
-			} catch (Exception ignore) {
-			}
-		}
+	public void selectExcelList(HttpServletResponse response) throws Exception {
+		boardService.selectExcelList(response);
 	}
 
 	// select menu
@@ -165,8 +106,7 @@ public class BoardController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList(HttpServletRequest req, Locale locale, Model model, PageVo pageVo, Criteria cri)
 			throws Exception {
-		String str = "bbb";
-		System.out.println(str);
+		System.out.println("abc");
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 
 		int page = 1;
