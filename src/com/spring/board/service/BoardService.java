@@ -1,9 +1,11 @@
 package com.spring.board.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.board.vo.BoardVo;
@@ -33,4 +35,6 @@ public interface BoardService {
 	
 	
 	public void selectExcelList(HttpServletResponse response) throws Exception;
+
+	public void calendarDownload(HttpServletResponse response) throws IOException, InvalidFormatException;
 }

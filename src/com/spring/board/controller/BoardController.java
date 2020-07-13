@@ -53,7 +53,12 @@ public class BoardController {
 	public void selectExcelList(HttpServletResponse response) throws Exception {
 		boardService.selectExcelList(response);
 	}
-
+	@RequestMapping(value = "/calendarDownload")
+	public void calendarDownload(HttpServletResponse response) throws Exception {
+		boardService.calendarDownload(response);
+	}
+	
+	
 	// select menu
 	@RequestMapping(value = "/selectBoardType/{codeType}", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
 	@ResponseBody

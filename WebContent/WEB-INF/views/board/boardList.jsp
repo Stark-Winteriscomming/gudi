@@ -13,7 +13,8 @@
 <script src="/resources/js/board/boardList.js"></script>
 
 <body>
-	<button id="btn-excel">엑셀 다운로드</button> 
+	<button id="btn-excel">엑셀 다운로드</button>
+	<button id="btn_canlendar">canlendar</button> 
 	<!-- 파일 생성중 보여질 진행막대를 포함하고 있는 다이얼로그 입니다. --> 
 	<div title="Data Download" id="preparing-file-modal" style="display: none;"> 
 	<div id="progressbar" style="width: 100%; height: 22px; margin-top: 20px;"></div> 

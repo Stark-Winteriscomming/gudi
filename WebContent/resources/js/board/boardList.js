@@ -10,6 +10,9 @@ function toggle(source) {
 }
 
 $j(document).ready(function() {
+	
+	
+	
 	$j("#btn-excel").on("click", function() {
 		var $preparingFileModal = $j("#preparing-file-modal");
 		$preparingFileModal.dialog({ modal: true });
@@ -37,4 +40,20 @@ $j(document).ready(function() {
 		$j("#frm_search").submit();
 	}
 	);
+	
+	$j("#btn_canlendar").on("click", function() {
+		var $preparingFileModal = $j("#preparing-file-modal");
+		$preparingFileModal.dialog({ modal: true });
+		$j("#progressbar").progressbar({ value: false });
+		$j.fileDownload("/board/calendarDownload", {
+			successCallback: function(url) { $preparingFileModal.dialog('close'); },
+			failCallback: function(responseHtml, url) { 
+				$preparingFileModal.dialog('close');
+				$j("#error-modal").dialog({ modal: true }); 
+			}
+		});
+		// 버튼의 원래 클릭 이벤트를 중지 시키기 위해 필요합니다.
+		return false;
+	})
+	
 });
