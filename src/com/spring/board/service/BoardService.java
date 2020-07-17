@@ -36,5 +36,5 @@ public interface BoardService {
 	
 	public void selectExcelList(HttpServletResponse response) throws Exception;
 
-	public void calendarDownload(HttpServletResponse response) throws IOException, InvalidFormatException;
+	public void calendarDownload(HttpServletResponse response, int selectedYear, int selectedMonth) throws IOException, InvalidFormatException;
 }

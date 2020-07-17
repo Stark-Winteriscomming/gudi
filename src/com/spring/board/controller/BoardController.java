@@ -55,7 +55,7 @@ public class BoardController {
 	}
 	@RequestMapping(value = "/calendarDownload")
 	public void calendarDownload(HttpServletResponse response) throws Exception {
-		boardService.calendarDownload(response);
+		boardService.calendarDownload(response, 2000, 7);
 	}
 	
 	

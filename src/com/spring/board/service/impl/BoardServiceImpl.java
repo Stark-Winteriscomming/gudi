@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,10 @@ import com.spring.board.service.BoardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.CodeVo;
 import com.spring.board.vo.Criteria;
+import com.spring.board.vo.DateHeader;
+import com.spring.board.vo.DayHeader;
 import com.spring.board.vo.PageVo;
+import com.sun.istack.internal.logging.Logger;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -137,98 +141,111 @@ public class BoardServiceImpl implements BoardService {
 
 		wb.close();
 	}
-
-	@Override
-	public void calendarDownload(HttpServletResponse response) throws IOException, InvalidFormatException {
-		// TODO Auto-generated method stub
-		String SAMPLE_XLSX_FILE_PATH = "C:\\_spring\\workspace\\springBoard\\WebContent\\WEB-INF\\test.xls";
-
-		// Creating a Workbook from an Excel file (.xls or .xlsx)
-		Workbook workbook = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
-		Workbook wb = new HSSFWorkbook();
-		// Retrieving the number of sheets in the Workbook
-		System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
-
-		/*
-		 * ============================================================= Iterating over
-		 * all the sheets in the workbook (Multiple ways)
-		 * =============================================================
-		 */
-
-		// 2. Or you can use a for-each loop
-		System.out.println("Retrieving Sheets using for-each loop");
-		for (Sheet sheet : workbook) {
-			System.out.println("=> " + sheet.getSheetName());
+	
+	public void datePrintPerRow(int refRowNum, Sheet wSheet, Sheet rSheet, int i, int daySize, int start, int end, DataFormatter dataFormatter, Workbook wwb) {
+		Row cDateRow = wSheet.createRow(i);
+		Row refDateRow = rSheet.getRow(refRowNum);
+		for(int k=0; k<=2; k++) {
+			Cell refDateCell = refDateRow.getCell(k);
+			for(int j=k; j < daySize * (end - start + 1); j=j+3) {
+				Cell wCell = cDateRow.createCell(j);
+				wCell.setCellValue(dataFormatter.formatCellValue(refDateCell));
+				CellStyle wcs = wwb.createCellStyle();
+				wcs.cloneStyleFrom(refDateCell.getCellStyle());
+				wCell.setCellStyle(wcs);
+			}
 		}
-
-		/*
-		 * ================================================================== Iterating
-		 * over all the rows and columns in a Sheet (Multiple ways)
-		 * ==================================================================
-		 */
-
-		// Getting the Sheet at index zero
-		Sheet sheet = workbook.getSheetAt(0);
-
-		// Create a DataFormatter to format and get each cell's value as String
+	}
+	@Override
+	public void calendarDownload(HttpServletResponse response, int selectedYear, int selectedMonth) throws IOException, InvalidFormatException {
+		String SAMPLE_XLSX_FILE_PATH = "C:\\_spring\\workspace\\springBoard\\WebContent\\WEB-INF\\test.xls";
+		String[] arrDays = {"일","월","화","수","목","금","토"};
+		// 월별일수 (평년 기준)
+		int[] arrDatesPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		int[] arrCalculatedDatesNum = new int[35];
+		
+		int index = 0;
+		//7월
+		selectedMonth = 6;
+		
+		// 7월 1일이 수요일이라 가정.
+		int firstDay = 3;
+		int preMonthEnd =  arrDatesPerMonth[selectedMonth - 1];
+		int preMonthStart = arrDatesPerMonth[selectedMonth - 1] - firstDay - 1;
+		
+		int preMonthDatesSize = preMonthEnd - preMonthStart + 1;
+		int nextMonthStart = preMonthDatesSize + arrDatesPerMonth[selectedMonth - 1];
+		int preMonthIndex = 0;
+		for(int i=preMonthStart; i<=preMonthEnd; i++) {
+			arrCalculatedDatesNum[preMonthIndex++] = i;
+		}
+		int nextMonthIndex = 1;
+		for(int i=nextMonthStart; i<arrCalculatedDatesNum.length; i++) {
+			arrCalculatedDatesNum[i] = nextMonthIndex++;
+		}
+		
+		
 		DataFormatter dataFormatter = new DataFormatter();
 
-		Sheet cSheet = wb.createSheet("게시판");
-		Row cRow = null;
-		int rowNo = 0;
-		Cell cCell = null;
-
-		//
-		List<CellRangeAddress> regionsList = new ArrayList<CellRangeAddress>();
-		for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
-			regionsList.add(sheet.getMergedRegion(i));
-		}
-		//
-		System.out.println("\n\nIterating over Rows and Columns using for-each loop\n");
-		for (Row row : sheet) {
-			cRow = cSheet.createRow(rowNo++);
-			short n = row.getLastCellNum();
-			int i = 0;
-			for (int j = 0; j < 7; j++) {
-				for (i = j * 3; i < j * 3 + n; i++) {
-					int index = i % 3;
-					cCell = cRow.createCell(i);
-					cCell.setCellValue(dataFormatter.formatCellValue(row.getCell(index)));
-					CellStyle newStyle = wb.createCellStyle();
-					newStyle.cloneStyleFrom(row.getCell(index).getCellStyle());
-					cCell.setCellStyle(newStyle);
+		// Creating a Workbook from an Excel file (.xls or .xlsx)
+		Workbook rwb = WorkbookFactory.create(new File(SAMPLE_XLSX_FILE_PATH));
+		Sheet rSheet = rwb.getSheetAt(0);
+		
+		String strDayHeader = dataFormatter.formatCellValue(rwb.getSheetAt(0).getRow(0).getCell(0));
+		String strDateHeader = dataFormatter.formatCellValue(rwb.getSheetAt(0).getRow(1).getCell(0));
+		ObjectMapper mapper = new ObjectMapper(); 
+		DayHeader dayHeader = mapper.readValue(strDayHeader, DayHeader.class);
+		DateHeader dateHeader = mapper.readValue(strDateHeader, DateHeader.class);
+		int locRow = 2;
+		int daySize = arrDays.length;
+		
+		//day
+		int row = Integer.parseInt(dayHeader.getRow());
+		int start = Integer.parseInt(dayHeader.getStart());
+		int end = Integer.parseInt(dayHeader.getEnd());
+		
+		//date
+		int rStart = Integer.parseInt(dateHeader.getrStart());
+		int rEnd = Integer.parseInt(dateHeader.getrEnd());
+		int cStart = Integer.parseInt(dateHeader.getcStart());
+		int cEnd = Integer.parseInt(dateHeader.getcEnd());
+		int dRow = Integer.parseInt(dateHeader.getdRow());
+		int dCol = Integer.parseInt(dateHeader.getdCol());
+		
+		Workbook wwb = new HSSFWorkbook();
+		Sheet wSheet = wwb.createSheet();
+		Row wRow = wSheet.createRow(locRow);
+		
+//		day printing
+		Row refRow = rSheet.getRow(row);
+		for(int i = start; i <= end; i++) {
+			Cell refCell = refRow.getCell(i);
+			for(int j=i; j < daySize * (end - start + 1); j=j+3) {
+				Cell wCell = wRow.createCell(j);
+				if(j % 3 == 1) {
+					wCell.setCellValue(arrDays[index++]);
 				}
+				else wCell.setCellValue(dataFormatter.formatCellValue(refCell));
+				
+				CellStyle wcs = wwb.createCellStyle();
+				wcs.cloneStyleFrom(refCell.getCellStyle());
+				wCell.setCellStyle(wcs);
 			}
-
-			System.out.println();
 		}
-		for (CellRangeAddress address : regionsList) {
-			int firstRow = address.getFirstRow();
-			int lastRow = address.getLastRow();
-			int firstColumn = address.getFirstColumn();
-			int lastColumn = address.getLastColumn();
-			
-//				cSheet.addMergedRegion(new CellRangeAddress(address.getFirstRow(), address.getLastRow(),
-//						address.getFirstColumn(), address.getLastColumn()));
-			
-			for (int i = 0; i < 21; i++) {
-				if(i % 3 == 0) {
-					cSheet.addMergedRegion(new CellRangeAddress(1, 1,
-							i, i+2));
-				}
-			}
-			
+//		date priting
+		for(int i=3; i<=17; i++) {
+			if(i % 3 == 0) {datePrintPerRow(3, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
+			if(i % 3 == 1) {datePrintPerRow(4, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
+			if(i % 3 == 2) {datePrintPerRow(5, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
 		}
-
+			
 		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-
 		response.setHeader("Content-Disposition", String.format("attachment; filename=\"test.xls\""));
-
 		// 엑셀 출력
-		wb.write(response.getOutputStream());
-
+		wwb.write(response.getOutputStream());
 		// Closing the workbook
-		workbook.close();
+		wwb.close();
+		rwb.close();
 	}
 
 }
