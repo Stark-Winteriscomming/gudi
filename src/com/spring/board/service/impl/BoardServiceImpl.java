@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,8 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	BoardDao boardDao;
-
+	
+	private static int dateIndex = 0;
 	@Override
 	public String selectTest() throws Exception {
 		// TODO Auto-generated method stub
@@ -142,14 +144,17 @@ public class BoardServiceImpl implements BoardService {
 		wb.close();
 	}
 	
-	public void datePrintPerRow(int refRowNum, Sheet wSheet, Sheet rSheet, int i, int daySize, int start, int end, DataFormatter dataFormatter, Workbook wwb) {
+	public synchronized void datePrintPerRow(int[] arrCalculatedDatesNum, int refRowNum, Sheet wSheet, Sheet rSheet, int i, int daySize, int start, int end, DataFormatter dataFormatter, Workbook wwb) {
 		Row cDateRow = wSheet.createRow(i);
 		Row refDateRow = rSheet.getRow(refRowNum);
 		for(int k=0; k<=2; k++) {
 			Cell refDateCell = refDateRow.getCell(k);
 			for(int j=k; j < daySize * (end - start + 1); j=j+3) {
 				Cell wCell = cDateRow.createCell(j);
-				wCell.setCellValue(dataFormatter.formatCellValue(refDateCell));
+				if(i % 3 == 0 && k==0 && j % 3 == 0) {
+					wCell.setCellValue(arrCalculatedDatesNum[dateIndex++]);
+				}
+				else wCell.setCellValue(dataFormatter.formatCellValue(refDateCell));
 				CellStyle wcs = wwb.createCellStyle();
 				wcs.cloneStyleFrom(refDateCell.getCellStyle());
 				wCell.setCellStyle(wcs);
@@ -157,8 +162,8 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 	@Override
-	public void calendarDownload(HttpServletResponse response, int selectedYear, int selectedMonth) throws IOException, InvalidFormatException {
-		String SAMPLE_XLSX_FILE_PATH = "C:\\_spring\\workspace\\springBoard\\WebContent\\WEB-INF\\test.xls";
+	public synchronized void calendarDownload(HttpServletResponse response, int selectedYear, int selectedMonth) throws IOException, InvalidFormatException {
+		String SAMPLE_XLSX_FILE_PATH = "C:\\_spring\\workspace\\springBoard\\WebContent\\WEB-INF\\test.xlsx";
 		String[] arrDays = {"일","월","화","수","목","금","토"};
 		// 월별일수 (평년 기준)
 		int[] arrDatesPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -171,12 +176,15 @@ public class BoardServiceImpl implements BoardService {
 		// 7월 1일이 수요일이라 가정.
 		int firstDay = 3;
 		int preMonthEnd =  arrDatesPerMonth[selectedMonth - 1];
-		int preMonthStart = arrDatesPerMonth[selectedMonth - 1] - firstDay - 1;
+		int preMonthStart = arrDatesPerMonth[selectedMonth - 1] - firstDay + 1;
 		
 		int preMonthDatesSize = preMonthEnd - preMonthStart + 1;
-		int nextMonthStart = preMonthDatesSize + arrDatesPerMonth[selectedMonth - 1];
+		int nextMonthStart = preMonthDatesSize + arrDatesPerMonth[selectedMonth];
 		int preMonthIndex = 0;
 		for(int i=preMonthStart; i<=preMonthEnd; i++) {
+			arrCalculatedDatesNum[preMonthIndex++] = i;
+		}
+		for(int i=1; i<=arrDatesPerMonth[selectedMonth]; i++) {
 			arrCalculatedDatesNum[preMonthIndex++] = i;
 		}
 		int nextMonthIndex = 1;
@@ -212,9 +220,21 @@ public class BoardServiceImpl implements BoardService {
 		int dRow = Integer.parseInt(dateHeader.getdRow());
 		int dCol = Integer.parseInt(dateHeader.getdCol());
 		
-		Workbook wwb = new HSSFWorkbook();
+		Workbook wwb = new XSSFWorkbook();
 		Sheet wSheet = wwb.createSheet();
 		Row wRow = wSheet.createRow(locRow);
+		
+//		read merged region
+//		요일, 일 부분에 따로 병합이 되있다면 list에 들어가는 것을 어떻게 구별할 것인가? header에 작성하는 게 좋을 듯 
+		List<CellRangeAddress> regionsList = new ArrayList<CellRangeAddress>();
+		for(int i = 0; i < rSheet.getNumMergedRegions(); i++) {
+			regionsList.add(rSheet.getMergedRegion(i));
+		}
+		
+		for(CellRangeAddress cra : regionsList) {
+			CellRangeAddress ncra = new CellRangeAddress(cra.getFirstRow(), cra.getLastRow(), cra.getFirstColumn(), cra.getLastColumn());
+			wSheet.addMergedRegion(ncra);
+		}
 		
 //		day printing
 		Row refRow = rSheet.getRow(row);
@@ -234,18 +254,17 @@ public class BoardServiceImpl implements BoardService {
 		}
 //		date priting
 		for(int i=3; i<=17; i++) {
-			if(i % 3 == 0) {datePrintPerRow(3, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
-			if(i % 3 == 1) {datePrintPerRow(4, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
-			if(i % 3 == 2) {datePrintPerRow(5, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
+			if(i % 3 == 0) {datePrintPerRow(arrCalculatedDatesNum, 3, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
+			if(i % 3 == 1) {datePrintPerRow(arrCalculatedDatesNum, 4, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
+			if(i % 3 == 2) {datePrintPerRow(arrCalculatedDatesNum, 5, wSheet, rSheet, i, daySize, cStart, cEnd, dataFormatter, wwb);}
 		}
-			
+		dateIndex = 0;
 		response.setHeader("Set-Cookie", "fileDownload=true; path=/");
-		response.setHeader("Content-Disposition", String.format("attachment; filename=\"test.xls\""));
+		response.setHeader("Content-Disposition", String.format("attachment; filename=\"test.xlsx\""));
 		// 엑셀 출력
 		wwb.write(response.getOutputStream());
 		// Closing the workbook
 		wwb.close();
 		rwb.close();
 	}
-
 }
